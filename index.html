@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mardos Power Generation Co. Ltd</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold: #F5B800;
+    --gold-dark: #C9940A;
+    --blue: #00AEEF;
+    --blue-dark: #0077B6;
+    --navy: #0A1A3A;
+    --white: #FFFFFF;
+    --off-white: #F5F7FA;
+    --light-bg: #EEF3F8;
+    --text-dark: #1A2A4A;
+    --text-mid: #4A6080;
+    --text-light: #7A95B0;
+    --border: rgba(10,26,58,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: var(--navy);
+    border-bottom: 3px solid var(--gold);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; height: 70px;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(10,26,58,0.25); }
+
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo-icon {
+    width: 46px; height: 46px; background: var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    animation: pulse-glow 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%,100% { box-shadow: 0 0 10px rgba(245,184,0,0.4); }
+    50% { box-shadow: 0 0 26px rgba(245,184,0,0.85), 0 0 50px rgba(0,174,239,0.3); }
+  }
+  .nav-logo-text { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: var(--gold); line-height: 1.2; }
+  .nav-logo-text span { display: block; font-size: 0.65rem; color: #90b8d8; letter-spacing: 1px; font-weight: 400; }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: #cdd8e8; text-decoration: none; font-size: 0.85rem;
+    letter-spacing: 1px; font-weight: 500; text-transform: uppercase;
+    position: relative; padding-bottom: 4px; transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--gold); transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ── TICKER ── */
+  .ticker-band { background: var(--gold); overflow: hidden; padding: 10px 0; }
+  .ticker-inner {
+    display: flex; gap: 60px; width: max-content;
+    animation: ticker-scroll 22s linear infinite;
+    font-family: 'Oswald', sans-serif; font-size: 0.85rem;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--navy);
+  }
+  @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-sep { opacity: 0.4; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #ffffff 0%, #eef3f8 50%, #ddeaf5 100%);
+    padding-top: 70px;
+  }
+
+  /* subtle grid on white */
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,174,239,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,174,239,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: grid-shift 20s linear infinite;
+  }
+  @keyframes grid-shift { from { transform: translateY(0); } to { transform: translateY(60px); } }
+
+  /* gold falling streaks */
+  .hero-bolts { position: absolute; inset: 0; pointer-events: none; }
+  .bolt {
+    position: absolute; width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    animation: bolt-fall linear infinite; opacity: 0;
+  }
+  @keyframes bolt-fall {
+    0% { transform: translateY(-120px); opacity: 0; }
+    10% { opacity: 0.75; }
+    90% { opacity: 0.75; }
+    100% { transform: translateY(110vh); opacity: 0; }
+  }
+
+  .hero-content { position: relative; z-index: 2; text-align: center; max-width: 860px; padding: 0 5%; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(245,184,0,0.12); border: 1px solid rgba(245,184,0,0.5);
+    border-radius: 99px; padding: 6px 18px; margin-bottom: 28px;
+    font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dark);
+    animation: fade-up 0.8s 0.2s both;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse-dot 1.5s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100% { transform: scale(1); } 50% { transform: scale(1.4); } }
+
+  .hero-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 5rem); font-weight: 700; line-height: 1.05;
+    color: var(--navy); animation: fade-up 0.8s 0.4s both;
+  }
+  .hero-title em { font-style: normal; color: var(--gold-dark); }
+  .hero-title .blue-word { color: var(--blue-dark); }
+
+  .hero-sub {
+    margin-top: 18px; font-size: clamp(1rem, 2vw, 1.15rem);
+    color: var(--text-mid); max-width: 580px; margin-inline: auto; line-height: 1.75;
+    animation: fade-up 0.8s 0.6s both;
+  }
+
+  .hero-cta { margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation: fade-up 0.8s 0.8s both; }
+  .btn {
+    padding: 14px 34px; border-radius: 4px;
+    font-family: 'Oswald', sans-serif; font-size: 1rem; letter-spacing: 1px;
+    text-transform: uppercase; text-decoration: none; cursor: pointer; border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--gold); color: var(--navy); box-shadow: 0 4px 20px rgba(245,184,0,0.35); }
+  .btn-primary:hover { box-shadow: 0 8px 30px rgba(245,184,0,0.55); }
+  .btn-outline { background: transparent; color: var(--blue-dark); border: 2px solid var(--blue); }
+  .btn-outline:hover { background: rgba(0,174,239,0.08); }
+
+  .hero-stats {
+    margin-top: 64px; display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+    animation: fade-up 0.8s 1s both;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Oswald', sans-serif; font-size: 2.2rem; color: var(--gold-dark); line-height: 1; }
+  .stat-label { font-size: 0.75rem; color: var(--text-light); letter-spacing: 1px; margin-top: 4px; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 100px 5%; }
+  .section-label { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 10px; font-weight: 600; }
+  .section-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; color: var(--navy); }
+  .section-title em { font-style: normal; color: var(--gold-dark); }
+  .divider { width: 60px; height: 3px; margin: 18px 0 36px; background: linear-gradient(90deg, var(--gold), var(--blue)); border-radius: 2px; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--off-white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .about-image-wrap { position: relative; }
+  .about-image-wrap img { width: 100%; border-radius: 8px; border: 3px solid var(--gold); box-shadow: 0 8px 40px rgba(10,26,58,0.12); }
+  .about-image-wrap::before {
+    content: ''; position: absolute; inset: -12px; z-index: -1;
+    border: 2px solid rgba(0,174,239,0.3); border-radius: 12px;
+  }
+  .about-tag {
+    position: absolute; bottom: -18px; right: -18px;
+    background: var(--gold); color: var(--navy);
+    font-family: 'Oswald', sans-serif; font-size: 0.85rem;
+    padding: 10px 18px; border-radius: 4px; letter-spacing: 1px;
+  }
+  .about-text p { color: var(--text-mid); line-height: 1.8; margin-bottom: 20px; font-size: 0.95rem; }
+  .about-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+  .pillar {
+    background: var(--white); border: 1px solid rgba(245,184,0,0.35);
+    border-radius: 6px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 10px; font-size: 0.85rem;
+    color: var(--text-dark); box-shadow: 0 2px 8px rgba(10,26,58,0.06);
+  }
+  .pillar-icon { font-size: 1.2rem; }
+
+  /* ── SERVICES ── */
+  #services { background: var(--white); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .service-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 36px 28px; position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; cursor: default;
+    box-shadow: 0 2px 12px rgba(10,26,58,0.06);
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--blue));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .service-card:hover { transform: translateY(-6px); border-color: rgba(245,184,0,0.5); box-shadow: 0 16px 48px rgba(10,26,58,0.12); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(245,184,0,0.1); display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; margin-bottom: 20px; border: 2px solid rgba(245,184,0,0.3);
+  }
+  .service-title { font-family: 'Oswald', sans-serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 10px; }
+  .service-desc { color: var(--text-mid); font-size: 0.88rem; line-height: 1.7; }
+  .service-num {
+    position: absolute; bottom: 18px; right: 22px;
+    font-family: 'Oswald', sans-serif; font-size: 2.5rem;
+    color: rgba(10,26,58,0.05); font-weight: 700;
+  }
+
+  /* ── BRANDS ── */
+  #brands { background: var(--off-white); }
+  .brands-track-wrap { overflow: hidden; position: relative; margin-top: 40px; }
+  .brands-track-wrap::before,
+  .brands-track-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
+  }
+  .brands-track-wrap::before { left: 0; background: linear-gradient(to right, var(--off-white), transparent); }
+  .brands-track-wrap::after  { right: 0; background: linear-gradient(to left,  var(--off-white), transparent); }
+  .brands-track { display: flex; gap: 40px; width: max-content; animation: scroll-brands 18s linear infinite; }
+  @keyframes scroll-brands { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .brand-pill {
+    background: var(--white); border: 1px solid rgba(245,184,0,0.35);
+    border-radius: 99px; padding: 12px 28px;
+    font-family: 'Oswald', sans-serif; font-size: 1.05rem;
+    color: var(--text-mid); white-space: nowrap;
+    transition: color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(10,26,58,0.06);
+  }
+  .brand-pill:hover { color: var(--gold-dark); border-color: var(--gold); box-shadow: 0 4px 16px rgba(245,184,0,0.2); }
+
+  /* ── LEADERSHIP ── */
+  #leadership { background: var(--light-bg); }
+  .leadership-grid { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+  .leader-card {
+    display: flex; align-items: center; gap: 24px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 32px;
+    max-width: 480px; width: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 20px rgba(10,26,58,0.08);
+  }
+  .leader-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(10,26,58,0.14); }
+  .leader-avatar {
+    width: 96px; height: 96px; flex-shrink: 0; border-radius: 50%;
+    border: 3px solid var(--gold); box-shadow: 0 0 20px rgba(245,184,0,0.25);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+  }
+  .leader-avatar-placeholder {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(245,184,0,0.15), rgba(0,174,239,0.15));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.4rem; color: var(--gold-dark);
+  }
+  .leader-name { font-family: 'Oswald', sans-serif; font-size: 1.25rem; color: var(--navy); }
+  .leader-title { font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-dark); margin: 4px 0 10px; }
+  .leader-desc { color: var(--text-mid); font-size: 0.84rem; line-height: 1.65; }
+
+  /* ── WHY US ── */
+  #why { background: var(--navy); position: relative; overflow: hidden; }
+  #why::before {
+    content: '⚡'; position: absolute; right: 4%; top: 50%; transform: translateY(-50%);
+    font-size: 20vw; opacity: 0.04; pointer-events: none;
+  }
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+  .why-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 30px 24px; text-align: center;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .why-card:hover { background: rgba(245,184,0,0.08); border-color: rgba(245,184,0,0.4); }
+  .why-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+  .why-title { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 8px; }
+  .why-text { color: #90aac8; font-size: 0.85rem; line-height: 1.65; }
+  /* why section overrides for text */
+  #why .section-label { color: #7ec8f0; }
+  #why .section-title { color: var(--white); }
+  #why p { color: #90aac8; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--off-white); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(10,26,58,0.06);
+  }
+  .contact-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .contact-label { font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 4px; }
+  .contact-val { font-size: 0.92rem; color: var(--text-dark); }
+
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 0.78rem; color: var(--text-mid); letter-spacing: 0.5px; font-weight: 500; }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: var(--white); border: 1px solid rgba(10,26,58,0.18);
+    border-radius: 4px; padding: 12px 14px;
+    color: var(--text-dark); font-family: 'Inter', sans-serif; font-size: 0.9rem;
+    transition: border-color 0.3s; outline: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,184,0,0.12); }
+  .form-group textarea { min-height: 110px; resize: vertical; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy); border-top: 3px solid var(--gold);
+    padding: 48px 5% 28px; display: flex; flex-direction: column; gap: 24px;
+  }
+  .footer-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand { font-family: 'Oswald', sans-serif; font-size: 1.3rem; color: var(--gold); }
+  .footer-brand span { display: block; font-size: 0.7rem; color: #7a95b0; font-family: 'Inter', sans-serif; margin-top: 2px; }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: #7a95b0; text-decoration: none; font-size: 0.82rem; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom { text-align: center; font-size: 0.77rem; color: #5a7590; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 20px; }
+  .footer-bottom em { color: var(--gold); font-style: normal; }
+
+  /* ── FLOATING BTN ── */
+  .floating-bolt {
+    position: fixed; bottom: 32px; right: 32px; z-index: 999;
+    width: 52px; height: 52px; border-radius: 50%; background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; cursor: pointer; box-shadow: 0 4px 20px rgba(245,184,0,0.5);
+    animation: bob 3s ease-in-out infinite; text-decoration: none;
+    transition: transform 0.2s;
+  }
+  .floating-bolt:hover { transform: scale(1.1); }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 28px; }
+    .form-row { grid-template-columns: 1fr; }
+    .leader-card { flex-direction: column; text-align: center; }
+  }
+
+  .count-up { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    <div class="nav-logo-text">
+      MARDOS
+      <span>Power Generation Co. Ltd</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#brands">Brands</a></li>
+    <li><a href="#leadership">Leadership</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-band" style="margin-top:70px;">
+  <div class="ticker-inner">
+    <span>⚡ Power You Can Trust</span><span class="ticker-sep"> | </span>
+    <span>🔧 Expert Generator Services</span><span class="ticker-sep"> | </span>
+    <span>🖥️ Advanced Diagnostic Technology</span><span class="ticker-sep"> | </span>
+    <span>⚡ Synchronization Specialists</span><span class="ticker-sep"> | </span>
+    <span>🔌 CAT · Perkins · Cummins · John Deere</span><span class="ticker-sep"> | </span>
+    <span>⚡ Power You Can Trust</span><span class="ticker-sep"> | </span>
+    <span>🔧 Expert Generator Services</span><span class="ticker-sep"> | </span>
+    <span>🖥️ Advanced Diagnostic Technology</span><span class="ticker-sep"> | </span>
+    <span>⚡ Synchronization Specialists</span><span class="ticker-sep"> | </span>
+    <span>🔌 CAT · Perkins · Cummins · John Deere</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bolts" id="boltsContainer"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span></span>
+      Tanzania's Power Generation Specialists
+    </div>
+    <h1 class="hero-title">
+      Powering <em>Industry</em>,<br>
+      Driving <span class="blue-word">Progress</span>
+    </h1>
+    <p class="hero-sub">
+      Mardos Power Generation Co. Ltd delivers world-class generator services —
+      from advanced synchronization systems to cutting-edge software diagnostics
+      for every major engine brand.
+    </p>
+    <div class="hero-cta">
+      <a href="#services" class="btn btn-primary">Our Services</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num"><span class="count-up" data-target="500">0</span>+</div>
+        <div class="stat-label">Generators Serviced</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="count-up" data-target="10">0</span>+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="count-up" data-target="6">0</span></div>
+        <div class="stat-label">Major Brands</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="count-up" data-target="24">0</span>/7</div>
+        <div class="stat-label">Support Available</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid reveal">
+    <div class="about-image-wrap">
+      <img src="/mnt/user-data/uploads/2.jpeg" alt="Mardos Power Generation Office"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <div style="display:none; width:100%; aspect-ratio:4/3; background:linear-gradient(135deg,rgba(245,184,0,0.1),rgba(0,174,239,0.1)); border-radius:8px; border:3px solid var(--gold); align-items:center; justify-content:center; font-size:5rem;">⚡</div>
+      <div class="about-tag">EST. IN TANZANIA</div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">Who We Are</div>
+      <h2 class="section-title">Tanzania's <em>Trusted</em> Power Partner</h2>
+      <div class="divider"></div>
+      <p>Mardos Power Generation Co. Ltd is a leading provider of power generation solutions in Tanzania. Founded on a commitment to technical excellence and reliable service, we have grown into one of the most trusted names in generator sales, installation, and maintenance across the region.</p>
+      <p>Our team of certified engineers and technicians brings deep expertise across all major generator brands and power systems. Whether it's a small residential unit or a large industrial installation, we bring the same dedication to quality and reliability.</p>
+      <div class="about-pillars">
+        <div class="pillar"><span class="pillar-icon">🎯</span> Precision Diagnostics</div>
+        <div class="pillar"><span class="pillar-icon">🔋</span> Reliable Power</div>
+        <div class="pillar"><span class="pillar-icon">🛡️</span> Certified Technicians</div>
+        <div class="pillar"><span class="pillar-icon">⚡</span> Fast Response</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div style="text-align:center; max-width:600px; margin: 0 auto 56px;" class="reveal">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Comprehensive <em>Power</em> Services</h2>
+    <div class="divider" style="margin: 18px auto 0;"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">🔄</div>
+      <div class="service-title">Generator Synchronize System</div>
+      <p class="service-desc">Advanced paralleling and synchronization of multiple generator sets for seamless load sharing, redundancy, and maximum power reliability. We design, install, and commission synchronization panels for industrial and commercial clients.</p>
+      <div class="service-num">01</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🖥️</div>
+      <div class="service-title">Software Diagnosis</div>
+      <p class="service-desc">Cutting-edge electronic diagnostics using OEM software for CAT, Perkins, Cummins, John Deere, and more. We read fault codes, calibrate sensors, update firmware, and deliver precise data-driven maintenance insights that prevent costly breakdowns.</p>
+      <div class="service-num">02</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">⚙️</div>
+      <div class="service-title">Generator Installation</div>
+      <p class="service-desc">Professional installation of generator sets of all sizes — from small residential standby units to large industrial power systems. We handle site assessment, civil works coordination, load calculations, and full commissioning.</p>
+      <div class="service-num">03</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔧</div>
+      <div class="service-title">Repair & Maintenance</div>
+      <p class="service-desc">Scheduled preventive maintenance and emergency repair services for all generator brands and models. Our mobile teams respond rapidly to minimise downtime and restore your power supply with lasting fixes.</p>
+      <div class="service-num">04</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔁</div>
+      <div class="service-title">Motor & Generator Rewinding</div>
+      <p class="service-desc">Expert rewinding of alternators and electric motors using quality copper wire and precision winding techniques. We restore original performance specifications, extending the service life of your equipment.</p>
+      <div class="service-num">05</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔌</div>
+      <div class="service-title">Electrical Works & More</div>
+      <p class="service-desc">Power factor correction, automatic changeover switch supply and installation, control panel design, and general electrical works. More services are continuously being added — contact us to discuss your specific needs.</p>
+      <div class="service-num">06</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section id="brands">
+  <div style="text-align:center; max-width:600px; margin: 0 auto 20px;" class="reveal">
+    <div class="section-label">Expertise Across</div>
+    <h2 class="section-title">All Major <em>Brands</em></h2>
+    <div class="divider" style="margin: 18px auto 0;"></div>
+    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;">Our technicians are trained and certified across the world's leading power generation brands.</p>
+  </div>
+  <div class="brands-track-wrap reveal">
+    <div class="brands-track">
+      <div class="brand-pill">⚙️ Caterpillar (CAT)</div>
+      <div class="brand-pill">🔩 Perkins</div>
+      <div class="brand-pill">⚙️ olympian (CAT)</div>
+      <div class="brand-pill">⚡ Cummins</div>
+      <div class="brand-pill">⚙️ Volvo (CAT)</div>
+      <div class="brand-pill">🌿 John Deere</div>
+      <div class="brand-pill">⚙️ Scania (CAT)</div>
+      <div class="brand-pill">🔧 FG Wilson</div>
+      <div class="brand-pill">🏭 Kohler</div>
+      <div class="brand-pill">🔌 Stamford</div>
+      <div class="brand-pill">⚙️ Leroy-Somer</div>
+      <div class="brand-pill">⚙️ Caterpillar (CAT)</div>
+      <div class="brand-pill">🔩 Perkins</div>
+      <div class="brand-pill">⚡ Cummins</div>
+      <div class="brand-pill">🌿 John Deere</div>
+      <div class="brand-pill">🔧 FG Wilson</div>
+      <div class="brand-pill">🏭 Kohler</div>
+      <div class="brand-pill">🔌 Stamford</div>
+      <div class="brand-pill">⚙️ Leroy-Somer</div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div style="text-align:center; max-width:600px; margin: 0 auto 56px;" class="reveal">
+    <div class="section-label">Our People</div>
+    <h2 class="section-title">Company <em>Leadership</em></h2>
+    <div class="divider" style="margin: 18px auto 0;"></div>
+    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;">The experienced team driving Mardos Power Generation's vision and operations.</p>
+  </div>
+  <div class="leadership-grid">
+    <div class="leader-card reveal">
+      <div class="leader-avatar">
+        <div class="leader-avatar-placeholder">👤</div>
+      </div>
+      <div class="leader-info">
+        <div class="leader-name">MARSHED DOSSA</div>
+        <div class="leader-title">Managing Director & Founder</div>
+        <p class="leader-desc">A visionary leader with decades of experience in the power generation industry across East Africa. Drives the company's strategy, partnerships, and commitment to engineering excellence.</p>
+      </div>
+    </div>
+    <div class="leader-card reveal">
+      <div class="leader-avatar">
+        <div class="leader-avatar-placeholder">👤</div>
+      </div>
+      <div class="leader-info">
+        <div class="leader-name">ABDALLA HASSANI</div>
+        <div class="leader-title">Head of Technical Operations</div>
+        <p class="leader-desc">Certified across CAT, Perkins, and Cummins platforms, leading our team of engineers in delivering precise diagnostics, complex repairs, and synchronization projects to the highest standards.</p>
+      </div>
+    </div>
+    <div class="leader-card reveal">
+      <div class="leader-avatar">
+        <div class="leader-avatar-placeholder">👤</div>
+      </div>
+      <div class="leader-info">
+        <div class="leader-name">ASIA IDDY</div>
+        <div class="leader-title">Operations Manager</div>
+        <p class="leader-desc">Oversees day-to-day service delivery, field team coordination, and client relationship management — ensuring every project is completed on time, on budget, and beyond expectations.</p>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center; color:var(--text-light); font-size:0.82rem; margin-top:32px;">* Update leader names, photos, and bios with your actual company leadership details.</p>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div style="text-align:center; max-width:600px; margin: 0 auto 56px;" class="reveal">
+    <div class="section-label">Why Choose Us</div>
+    <h2 class="section-title">The Mardos <em>Advantage</em></h2>
+    <div class="divider" style="margin: 18px auto 0;"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <span class="why-icon">🏆</span>
+      <div class="why-title">Certified Expertise</div>
+      <p class="why-text">Our technicians are factory-trained and certified by leading OEMs, guaranteeing work done right — every time.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">🚀</span>
+      <div class="why-title">Fast Response</div>
+      <p class="why-text">Emergency breakdowns can't wait. Our rapid deployment teams reach you quickly to restore power with minimal delay.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">🔬</span>
+      <div class="why-title">Technology-Driven</div>
+      <p class="why-text">We invest in the latest OEM diagnostic software and tools so you receive precision analysis, not guesswork.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">🤝</span>
+      <div class="why-title">Long-Term Partnership</div>
+      <p class="why-text">We build lasting relationships with our clients, offering service contracts and scheduled maintenance programmes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="reveal">
+      <div class="section-label">Reach Out</div>
+      <h2 class="section-title">Let's <em>Talk Power</em></h2>
+      <div class="divider"></div>
+      <p style="color:var(--text-mid); font-size:0.9rem; margin-bottom:32px; line-height:1.7;">Whether you need a new installation, urgent repair, or want to learn more about our synchronization systems — our team is ready to help.</p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div><div class="contact-label">Office Location</div><div class="contact-val">Dar es Salaam, Tanzania</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <div><div class="contact-label">Phone / WhatsApp</div><div class="contact-val">+255 715 397 132 / +255 789 132 070</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">✉️</span>
+          <div><div class="contact-label">Email</div><div class="contact-val">info@mardospower.co.tz</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🕐</span>
+          <div><div class="contact-label">Working Hours</div><div class="contact-val">Mon – Sat: 8:00 AM – 6:00 PM<br>Emergency: 24 / 7</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:10px; padding:36px; box-shadow:0 4px 24px rgba(10,26,58,0.08);">
+        <h3 style="font-family:'Oswald',sans-serif; font-size:1.3rem; margin-bottom:24px; color:var(--navy);">Send Us a Message</h3>
+        <div class="contact-form">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name" /></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+255 ..." /></div>
+          </div>
+          <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@example.com" /></div>
+          <div class="form-group">
+            <label>Service Required</label>
+            <select>
+              <option value="">Select a service...</option>
+              <option>Generator Synchronize System</option>
+              <option>Software Diagnosis (CAT/Perkins/Cummins/JD)</option>
+              <option>Generator Installation</option>
+              <option>Repair & Maintenance</option>
+              <option>Motor / Generator Rewinding</option>
+              <option>Changeover Switch</option>
+              <option>Electrical Works</option>
+              <option>Other / General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message</label><textarea placeholder="Describe your need or equipment..."></textarea></div>
+          <button class="btn btn-primary" onclick="handleSubmit()" style="width:100%; margin-top:4px;">Send Message ⚡</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">⚡ MARDOS POWER GENERATION CO. LTD<span>Powering Tanzania's Future</span></div>
+    </div>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#brands">Brands</a>
+      <a href="#leadership">Leadership</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 <em>Mardos Power Generation Co. Ltd</em> · All rights reserved · Dar es Salaam, Tanzania</div>
+</footer>
+
+<a href="#contact" class="floating-bolt" title="Contact Us">⚡</a>
+
+<script>
+// Gold falling streaks
+const c = document.getElementById('boltsContainer');
+for (let i = 0; i < 22; i++) {
+  const b = document.createElement('div');
+  b.className = 'bolt';
+  b.style.left = Math.random() * 100 + '%';
+  b.style.height = (40 + Math.random() * 100) + 'px';
+  b.style.animationDuration = (4 + Math.random() * 8) + 's';
+  b.style.animationDelay = (Math.random() * 12) + 's';
+  c.appendChild(b);
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Count-up
+function animCount(el) {
+  const t = parseInt(el.dataset.target), d = 1800;
+  const step = Math.max(10, d / t);
+  let cur = 0;
+  const tm = setInterval(() => { cur = Math.min(cur + 1, t); el.textContent = cur; if (cur === t) clearInterval(tm); }, step);
+}
+const cObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { animCount(e.target); cObs.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('.count-up').forEach(el => cObs.observe(el));
+
+// Nav scroll shadow
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+function handleSubmit() {
+  alert('Thank you for your message! Our team will contact you shortly.\n\nMardos Power Generation Co. Ltd — Powering Your World ⚡');
+}
+</script>
+</body>
+</html>
