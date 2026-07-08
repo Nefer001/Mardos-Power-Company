@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Mardos Power Generation Co. Ltd</title>
+<link rel="icon" type="image/png" href="images/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
   :root {
@@ -79,6 +80,62 @@
   }
   @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .ticker-sep { opacity: 0.4; }
+
+  /* ── LANGUAGE SWITCHER ── */
+  .lang-switcher {
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    z-index: 2000;
+  }
+  .lang-selected {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--navy);
+    border: 1px solid rgba(245,184,0,0.5);
+    border-radius: 6px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--gold);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(10,26,58,0.3);
+    user-select: none;
+    transition: border-color 0.2s;
+    min-width: 110px;
+  }
+  .lang-selected:hover { border-color: var(--gold); }
+  .lang-selected .lang-flag { font-size: 1rem; }
+  .lang-selected .lang-label { flex: 1; }
+  .lang-selected .lang-arrow {
+    font-size: 0.6rem; color: rgba(245,184,0,0.6);
+    transition: transform 0.25s;
+  }
+  .lang-switcher.open .lang-arrow { transform: rotate(180deg); }
+
+  .lang-dropdown {
+    display: none;
+    position: absolute; top: calc(100% + 6px); left: 0;
+    background: var(--navy);
+    border: 1px solid rgba(245,184,0,0.4);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(10,26,58,0.4);
+    min-width: 110px;
+  }
+  .lang-switcher.open .lang-dropdown { display: block; }
+
+  .lang-option {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 14px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;
+    color: #90aac8; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .lang-option:hover { background: rgba(245,184,0,0.12); color: var(--gold); }
+  .lang-option.active { color: var(--gold); background: rgba(245,184,0,0.08); }
+  .lang-option .lang-flag { font-size: 1rem; }
 
   /* ── HERO ── */
   #hero {
@@ -174,12 +231,7 @@
 
   /* ── ABOUT ── */
   #about { background: var(--off-white); }
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: center;
-  }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   .about-tag {
     position: absolute; bottom: -18px; right: -18px;
     background: var(--gold); color: var(--navy);
@@ -198,31 +250,20 @@
   .pillar-icon { font-size: 1.2rem; }
 
   /* ── ABOUT SLIDER ── */
-  .about-slider-wrap {
-    position: relative;
-    margin-bottom: 40px;
-  }
-
+  .about-slider-wrap { position: relative; margin-bottom: 40px; }
   .about-slider {
-    position: relative;
-    width: 100%;
-    height: 420px;
-    border-radius: 10px;
-    overflow: hidden;
+    position: relative; width: 100%; height: 420px;
+    border-radius: 10px; overflow: hidden;
     border: 3px solid var(--gold);
     box-shadow: 0 8px 40px rgba(10,26,58,0.15);
   }
-
-  /* four corner bracket decorations */
   .about-slider-wrap::before,
   .about-slider-wrap::after,
   .about-slider-corners::before,
   .about-slider-corners::after {
-    content: '';
-    position: absolute;
+    content: ''; position: absolute;
     width: 28px; height: 28px;
-    border-color: var(--gold);
-    border-style: solid;
+    border-color: var(--gold); border-style: solid;
     z-index: 30; pointer-events: none;
   }
   .about-slider-wrap::before { top: -8px; left: -8px; border-width: 3px 0 0 3px; }
@@ -230,151 +271,41 @@
   .about-slider-corners { position: absolute; inset: 0; pointer-events: none; }
   .about-slider-corners::before { top: -8px; right: -8px; border-width: 3px 3px 0 0; }
   .about-slider-corners::after  { bottom: 52px; left: -8px; border-width: 0 0 3px 3px; }
-
-  /* slides — all stacked, only .active visible */
-  .slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    z-index: 0;
-  }
-  .slide.active {
-    opacity: 1;
-    z-index: 1;
-  }
-
-  .slide-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--navy);
-  }
-
+  .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 0; }
+  .slide.active { opacity: 1; z-index: 1; }
+  .slide-bg { position: absolute; inset: 0; background-size: cover; background-position: center; background-color: var(--navy); }
   .slide-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(10,26,58,0.88) 0%,
-      rgba(10,26,58,0.35) 55%,
-      rgba(10,26,58,0.10) 100%
-    );
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,26,58,0.88) 0%, rgba(10,26,58,0.35) 55%, rgba(10,26,58,0.10) 100%);
   }
-
-  .slide-caption {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 24px 22px;
-    z-index: 2;
-  }
-  .slide-caption h3 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.2rem;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .slide-caption p {
-    font-size: 0.82rem;
-    color: #cdd8e8;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  /* slide number badge */
+  .slide-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 22px; z-index: 2; }
+  .slide-caption h3 { font-family: 'Oswald', sans-serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 6px; }
+  .slide-caption p { font-size: 0.82rem; color: #cdd8e8; line-height: 1.6; margin: 0; }
   .slide-badge {
-    position: absolute;
-    top: 14px; right: 14px;
-    background: rgba(245,184,0,0.15);
-    border: 1px solid rgba(245,184,0,0.4);
-    color: var(--gold);
-    font-family: 'Oswald', sans-serif;
-    font-size: 0.75rem; letter-spacing: 1px;
-    padding: 4px 10px; border-radius: 99px;
-    z-index: 3;
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(245,184,0,0.15); border: 1px solid rgba(245,184,0,0.4);
+    color: var(--gold); font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem; letter-spacing: 1px; padding: 4px 10px; border-radius: 99px; z-index: 3;
   }
-
-  /* prev / next arrows */
   .slider-arrow {
-    position: absolute;
-    top: 50%; transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(10,26,58,0.6);
-    border: 1px solid rgba(245,184,0,0.45);
-    color: var(--gold);
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
-    transition: background 0.2s;
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+    background: rgba(10,26,58,0.6); border: 1px solid rgba(245,184,0,0.45);
+    color: var(--gold); width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; transition: background 0.2s;
   }
   .slider-arrow:hover { background: rgba(245,184,0,0.3); }
   .slider-arrow.prev { left: 12px; }
   .slider-arrow.next { right: 12px; }
-
-  /* dots row — sits BELOW the slider box */
-  .slider-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 14px;
-  }
+  .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
   .slider-dot {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: rgba(10,26,58,0.2);
-    border: 2px solid rgba(245,184,0,0.4);
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-    padding: 0;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: rgba(10,26,58,0.2); border: 2px solid rgba(245,184,0,0.4);
+    cursor: pointer; transition: background 0.3s, transform 0.3s; padding: 0;
   }
-  .slider-dot.active {
-    background: var(--gold);
-    border-color: var(--gold);
-    transform: scale(1.3);
-  }
-
-  /* progress bar */
-  .slider-progress {
-    height: 3px;
-    background: rgba(10,26,58,0.1);
-    border-radius: 2px;
-    margin-top: 10px;
-    overflow: hidden;
-  }
-  .slider-progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--gold), var(--blue));
-    border-radius: 2px;
-  }
-
-  /* ── LANGUAGE SWITCHER ── */
-  .lang-switcher {
-    position: fixed;
-    top: 16px; left: 20px;
-    z-index: 2000;
-    display: flex; align-items: center; gap: 6px;
-    background: rgba(10,26,58,0.88);
-    border: 1px solid rgba(245,184,0,0.4);
-    border-radius: 99px;
-    padding: 5px 12px;
-    backdrop-filter: blur(8px);
-  }
-  .lang-btn {
-    font-family: 'Oswald', sans-serif;
-    font-size: 0.78rem; letter-spacing: 1px;
-    text-transform: uppercase;
-    background: none; border: none;
-    cursor: pointer;
-    padding: 3px 8px; border-radius: 99px;
-    color: #90aac8;
-    transition: color 0.2s, background 0.2s;
-  }
-  .lang-btn.active { background: var(--gold); color: var(--navy); }
-  .lang-sep { color: rgba(245,184,0,0.3); font-size: 0.7rem; }
+  .slider-dot.active { background: var(--gold); border-color: var(--gold); transform: scale(1.3); }
+  .slider-progress { height: 3px; background: rgba(10,26,58,0.1); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+  .slider-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold), var(--blue)); border-radius: 2px; }
 
   /* ── SERVICES ── */
   #services { background: var(--white); }
@@ -392,18 +323,9 @@
   }
   .service-card:hover { transform: translateY(-6px); border-color: rgba(245,184,0,0.5); box-shadow: 0 16px 48px rgba(10,26,58,0.12); }
   .service-card:hover::before { transform: scaleX(1); }
-  .service-icon {
-    width: 56px; height: 56px; border-radius: 50%;
-    background: rgba(245,184,0,0.1); display: flex; align-items: center; justify-content: center;
-    font-size: 1.6rem; margin-bottom: 20px; border: 2px solid rgba(245,184,0,0.3);
-  }
   .service-title { font-family: 'Oswald', sans-serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 10px; }
   .service-desc { color: var(--text-mid); font-size: 0.88rem; line-height: 1.7; }
-  .service-num {
-    position: absolute; bottom: 18px; right: 22px;
-    font-family: 'Oswald', sans-serif; font-size: 2.5rem;
-    color: rgba(10,26,58,0.05); font-weight: 700;
-  }
+  .service-num { position: absolute; bottom: 18px; right: 22px; font-family: 'Oswald', sans-serif; font-size: 2.5rem; color: rgba(10,26,58,0.05); font-weight: 700; }
 
   /* ── BRANDS ── */
   #brands { background: var(--off-white); }
@@ -425,14 +347,8 @@
     box-shadow: 0 2px 8px rgba(10,26,58,0.06);
   }
   .brand-pill:hover { color: var(--gold-dark); border-color: var(--gold); box-shadow: 0 4px 16px rgba(245,184,0,0.2); }
-
-  @keyframes scroll-brands-reverse {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
-  }
-  .brands-track-reverse {
-    animation: scroll-brands-reverse 18s linear infinite;
-  }
+  @keyframes scroll-brands-reverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  .brands-track-reverse { animation: scroll-brands-reverse 18s linear infinite; }
 
   /* ── LEADERSHIP ── */
   #leadership { background: var(--light-bg); }
@@ -451,22 +367,13 @@
     border: 3px solid var(--gold); box-shadow: 0 0 20px rgba(245,184,0,0.25);
     overflow: hidden; display: flex; align-items: center; justify-content: center;
   }
-  .leader-avatar-placeholder {
-    width: 100%; height: 100%; border-radius: 50%;
-    background: linear-gradient(135deg, rgba(245,184,0,0.15), rgba(0,174,239,0.15));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2.4rem; color: var(--gold-dark);
-  }
   .leader-name { font-family: 'Oswald', sans-serif; font-size: 1.25rem; color: var(--navy); }
   .leader-title { font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-dark); margin: 4px 0 10px; }
   .leader-desc { color: var(--text-mid); font-size: 0.84rem; line-height: 1.65; }
 
   /* ── WHY US ── */
   #why { background: var(--navy); position: relative; overflow: hidden; }
-  #why::before {
-    content: '⚡'; position: absolute; right: 4%; top: 50%; transform: translateY(-50%);
-    font-size: 20vw; opacity: 0.04; pointer-events: none;
-  }
+  #why::before { content: '⚡'; position: absolute; right: 4%; top: 50%; transform: translateY(-50%); font-size: 20vw; opacity: 0.04; pointer-events: none; }
   .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
   .why-card {
     background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
@@ -474,7 +381,7 @@
     transition: background 0.3s, border-color 0.3s;
   }
   .why-card:hover { background: rgba(245,184,0,0.08); border-color: rgba(245,184,0,0.4); }
-  .why-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+  .why-icon {width: 50px; height: 50px; object-fit: contain; margin-bottom: 15px; display: block; align-items: center; justify-content: center; margin-inline: auto; }
   .why-title { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 8px; }
   .why-text { color: #90aac8; font-size: 0.85rem; line-height: 1.65; }
   #why .section-label { color: #7ec8f0; }
@@ -491,10 +398,15 @@
     border-radius: 8px; padding: 18px 20px;
     box-shadow: 0 2px 8px rgba(10,26,58,0.06);
   }
-  .contact-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .contact-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
   .contact-label { font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 4px; }
   .contact-val { font-size: 0.92rem; color: var(--text-dark); }
-
   .contact-form { display: flex; flex-direction: column; gap: 16px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -518,8 +430,9 @@
     padding: 48px 5% 28px; display: flex; flex-direction: column; gap: 24px;
   }
   .footer-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
-  .footer-brand { font-family: 'Oswald', sans-serif; font-size: 1.3rem; color: var(--gold); }
-  .footer-brand span { display: block; font-size: 0.7rem; color: #7a95b0; font-family: 'Inter', sans-serif; margin-top: 2px; }
+  .footer-brand { font-family: 'Oswald', sans-serif; font-size: 1.3rem; color: var(--gold); display: flex; align-items: center; gap: 10px; flex-wrap: wrap;}
+  .footer-brand-icon {width: 35px;height: 35px;object-fit: contain;flex-shrink: 0; background: transparent; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;}
+  .footer-brand span {width: 100%;}
   .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
   .footer-links a { color: #7a95b0; text-decoration: none; font-size: 0.82rem; transition: color 0.3s; }
   .footer-links a:hover { color: var(--gold); }
@@ -532,8 +445,7 @@
     width: 52px; height: 52px; border-radius: 50%; background: var(--gold);
     display: flex; align-items: center; justify-content: center;
     font-size: 1.4rem; cursor: pointer; box-shadow: 0 4px 20px rgba(245,184,0,0.5);
-    animation: bob 3s ease-in-out infinite; text-decoration: none;
-    transition: transform 0.2s;
+    animation: bob 3s ease-in-out infinite; text-decoration: none; transition: transform 0.2s;
   }
   .floating-bolt:hover { transform: scale(1.1); }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -548,16 +460,25 @@
   }
 
   .count-up { font-variant-numeric: tabular-nums; }
-
 </style>
 </head>
 <body>
 
 <!-- LANGUAGE SWITCHER -->
-<div class="lang-switcher">
-  <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
-  <span class="lang-sep">|</span>
-  <button class="lang-btn" onclick="setLang('sw')" id="btn-sw">SW</button>
+<div class="lang-switcher" id="langSwitcher">
+  <div class="lang-selected" onclick="toggleLangDropdown()">
+    <span class="lang-flag" id="activeLangFlag">🇬🇧</span>
+    <span class="lang-label" id="activeLangLabel">English</span>
+    <span class="lang-arrow">▼</span>
+  </div>
+  <div class="lang-dropdown">
+    <div class="lang-option active" onclick="setLang('en')" id="opt-en">
+      <span class="lang-flag">🇬🇧</span> English
+    </div>
+    <div class="lang-option" onclick="setLang('sw')" id="opt-sw">
+      <span class="lang-flag">🇹🇿</span> Kiswahili
+    </div>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -570,27 +491,27 @@
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#brands">Brands</a></li>
-    <li><a href="#leadership">Leadership</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about" data-en="About" data-sw="Kuhusu">About</a></li>
+    <li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li>
+    <li><a href="#brands" data-en="Brands" data-sw="Chapa">Brands</a></li>
+    <li><a href="#leadership" data-en="Leadership" data-sw="Uongozi">Leadership</a></li>
+    <li><a href="#contact" data-en="Contact" data-sw="Wasiliana">Contact</a></li>
   </ul>
 </nav>
 
 <!-- TICKER -->
 <div class="ticker-band" style="margin-top:70px;">
   <div class="ticker-inner">
-    <span> Power You Can Trust</span><span class="ticker-sep"> | </span>
-    <span> Expert Generator Services</span><span class="ticker-sep"> | </span>
-    <span> Advanced Diagnostic Technology</span><span class="ticker-sep"> | </span>
-    <span> Synchronization Specialists</span><span class="ticker-sep"> | </span>
-    <span> CAT · Perkins · Cummins · John Deere</span><span class="ticker-sep"> | </span>
-    <span> Power You Can Trust</span><span class="ticker-sep"> | </span>
-    <span> Expert Generator Services</span><span class="ticker-sep"> | </span>
-    <span> Advanced Diagnostic Technology</span><span class="ticker-sep"> | </span>
-    <span> Synchronization Specialists</span><span class="ticker-sep"> | </span>
-    <span> CAT · Perkins · Cummins · John Deere</span>
+    <span data-en="Power You Can Trust" data-sw="Nguvu Unayoweza Kuiamini">Power You Can Trust</span><span class="ticker-sep"> | </span>
+    <span data-en="Expert Generator Services" data-sw="Huduma Bora za Jenereta">Expert Generator Services</span><span class="ticker-sep"> | </span>
+    <span data-en="Advanced Diagnostic Technology" data-sw="Teknolojia ya Hali ya Juu ya Utambuzi">Advanced Diagnostic Technology</span><span class="ticker-sep"> | </span>
+    <span data-en="Synchronization Specialists" data-sw="Wataalamu wa Usawazishaji">Synchronization Specialists</span><span class="ticker-sep"> | </span>
+    <span data-en="CAT · Perkins · Cummins · John Deere" data-sw="CAT · Perkins · Cummins · John Deere">CAT · Perkins · Cummins · John Deere</span><span class="ticker-sep"> | </span>
+    <span data-en="Power You Can Trust" data-sw="Nguvu Unayoweza Kuiamini">Power You Can Trust</span><span class="ticker-sep"> | </span>
+    <span data-en="Expert Generator Services" data-sw="Huduma Bora za Jenereta">Expert Generator Services</span><span class="ticker-sep"> | </span>
+    <span data-en="Advanced Diagnostic Technology" data-sw="Teknolojia ya Hali ya Juu ya Utambuzi">Advanced Diagnostic Technology</span><span class="ticker-sep"> | </span>
+    <span data-en="Synchronization Specialists" data-sw="Wataalamu wa Usawazishaji">Synchronization Specialists</span><span class="ticker-sep"> | </span>
+    <span data-en="CAT · Perkins · Cummins · John Deere" data-sw="CAT · Perkins · Cummins · John Deere">CAT · Perkins · Cummins · John Deere</span>
   </div>
 </div>
 
@@ -598,41 +519,39 @@
 <section id="hero">
   <div class="hero-bg-grid"></div>
   <div class="hero-bolts" id="boltsContainer"></div>
-
   <div class="hero-content">
     <div class="hero-badge">
       <span></span>
-      Tanzania's Power Generation Specialists
+      <span data-en="Tanzania's Power Generation Specialists" data-sw="Wataalamu wa Uzalishaji Nishati Tanzania">Tanzania's Power Generation Specialists</span>
     </div>
     <h1 class="hero-title">
-      Powering <em>Industry</em>,<br>
-      Driving <span class="blue-word">Progress</span>
+      <span data-en="Powering" data-sw="Kuendesha">Powering</span> <em data-en="Industry" data-sw="Viwanda">Industry</em>,<br>
+      <span data-en="Driving" data-sw="Kusukuma">Driving</span> <span class="blue-word" data-en="Progress" data-sw="Maendeleo">Progress</span>
     </h1>
-    <p class="hero-sub">
-      Mardos Power Generation Co. Ltd delivers world-class generator services —
-      from advanced synchronization systems to cutting-edge software diagnostics
-      for every major engine brand.
+    <p class="hero-sub" data-en="Mardos Power Generation Co. Ltd delivers world-class generator services — from advanced synchronization systems to cutting-edge software diagnostics for every major engine brand."
+       data-sw="Mardos Power Generation Co. Ltd inatoa huduma za jenereta za kiwango cha dunia — kutoka mifumo ya kisasa ya usawazishaji hadi utambuzi wa programu wa hali ya juu kwa kila chapa kuu ya injini.">
+      Mardos Power Generation Co. Ltd delivers world-class generator services — from advanced synchronization systems to cutting-edge software diagnostics for every major engine brand.
     </p>
     <div class="hero-cta">
-      <a href="#services" class="btn btn-primary">Our Services</a>
-      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      <a href="#services" class="btn btn-primary" data-en="Our Services" data-sw="Huduma Zetu">Our Services</a>
+      <a href="#contact" class="btn btn-outline" data-en="Get In Touch" data-sw="Wasiliana Nasi">Get In Touch</a>
     </div>
     <div class="hero-stats">
       <div class="stat">
         <div class="stat-num"><span class="count-up" data-target="500">0</span>+</div>
-        <div class="stat-label">Generators Serviced</div>
+        <div class="stat-label" data-en="Generators Serviced" data-sw="Jenereta Zilizohudumishwa">Generators Serviced</div>
       </div>
       <div class="stat">
         <div class="stat-num"><span class="count-up" data-target="10">0</span>+</div>
-        <div class="stat-label">Years Experience</div>
+        <div class="stat-label" data-en="Years Experience" data-sw="Miaka ya Uzoefu">Years Experience</div>
       </div>
       <div class="stat">
         <div class="stat-num"><span class="count-up" data-target="9">0</span></div>
-        <div class="stat-label">Major Brands</div>
+        <div class="stat-label" data-en="Major Brands" data-sw="Chapa Kuu">Major Brands</div>
       </div>
       <div class="stat">
         <div class="stat-num"><span class="count-up" data-target="24">0</span>/7</div>
-        <div class="stat-label">Support Available</div>
+        <div class="stat-label" data-en="Support Available" data-sw="Msaada Unapatikana">Support Available</div>
       </div>
     </div>
   </div>
@@ -641,18 +560,11 @@
 <!-- ABOUT -->
 <section id="about">
   <div class="about-grid reveal">
-
     <!-- LEFT: SLIDER -->
     <div class="about-slider-wrap">
-
-      <!-- corner brackets helper -->
       <div class="about-slider-corners"></div>
-
-      
-      <!-- slider box -->
       <div class="about-slider" id="aboutSlider">
 
-        <!-- SLIDE 1 -->
         <div class="slide active">
           <div class="slide-bg" style="background-image:url('assets/selected sites/7.jpeg'); background-color:#0d2a50;"></div>
           <div class="slide-overlay"></div>
@@ -666,7 +578,6 @@
           </div>
         </div>
 
-        <!-- SLIDE 2 -->
         <div class="slide">
           <div class="slide-bg" style="background-image:url('assets/selected sites/1.jpeg'); background-color:#0d2a50;"></div>
           <div class="slide-overlay"></div>
@@ -680,7 +591,6 @@
           </div>
         </div>
 
-        <!-- SLIDE 3 -->
         <div class="slide">
           <div class="slide-bg" style="background-image:url('assets/selected sites/3.jpeg'); background-color:#0d2a50;"></div>
           <div class="slide-overlay"></div>
@@ -694,7 +604,6 @@
           </div>
         </div>
 
-        <!-- SLIDE 4 -->
         <div class="slide">
           <div class="slide-bg" style="background-image:url('assets/selected sites/2.jpeg'); background-color:#0d2a50;"></div>
           <div class="slide-overlay"></div>
@@ -708,7 +617,6 @@
           </div>
         </div>
 
-        <!-- SLIDE 5 -->
         <div class="slide">
           <div class="slide-bg" style="background-image:url('assets/selected sites/6.jpeg'); background-color:#0d2a50;"></div>
           <div class="slide-overlay"></div>
@@ -722,7 +630,6 @@
           </div>
         </div>
 
-        <!-- SLIDE 6 -->
         <div class="slide">
           <div class="slide-bg" style="background-image:url('assets/selected sites/5.jpeg'); background-color:#0d2a50;"></div>
           <div class="slide-overlay"></div>
@@ -736,30 +643,22 @@
           </div>
         </div>
 
-        <!-- ARROWS inside slider -->
         <button class="slider-arrow prev" onclick="moveSlide(-1)">&#8249;</button>
         <button class="slider-arrow next" onclick="moveSlide(1)">&#8250;</button>
-
-      </div><!-- end .about-slider -->
-
-      <!-- dots and progress bar sit OUTSIDE slider box, INSIDE wrap -->
-      <div class="slider-dots" id="sliderDots"></div>
-      <div class="slider-progress">
-        <div class="slider-progress-bar" id="sliderBar"></div>
       </div>
 
-      <!-- EST tag -->
+      <div class="slider-dots" id="sliderDots"></div>
+      <div class="slider-progress"><div class="slider-progress-bar" id="sliderBar"></div></div>
       <div class="about-tag" data-en="EST. IN TANZANIA" data-sw="ILIANZISHWA TANZANIA">EST. IN TANZANIA</div>
-
-    </div><!-- end .about-slider-wrap -->
+    </div>
 
     <!-- RIGHT: TEXT -->
     <div class="about-text">
       <div class="section-label" data-en="Who We Are" data-sw="Sisi Ni Nani">Who We Are</div>
       <h2 class="section-title">
-        <span data-en="Tanzania's" data-sw="Mshirika wa Nguvu">Tanzania's</span>
+        <span data-en="Tanzania's" data-sw="Mshirika wa Nishati">Tanzania's</span>
         <em data-en=" Trusted" data-sw=" Anayeaminiwa"> Trusted</em>
-        <span data-en=" Power Partner" data-sw=" wa Tanzania"> Power Partner</span>
+        <span data-en=" Power Partner" data-sw=" na Watanzania"> Power Partner</span>
       </h2>
       <div class="divider"></div>
       <p data-en="Mardos Power Generation Co. Ltd is a leading provider of power generation solutions in Tanzania. Founded in 2015 with a commitment to technical excellence and reliable service, we have grown into one of the most trusted names in generator sales, installation, and maintenance across the region."
@@ -770,54 +669,70 @@
          data-sw="Timu yetu ya wahandisi na mafundi wenye vyeti inaleta ujuzi wa kina katika aina zote kuu za jenereta na mifumo ya nguvu. Iwe ni kitengo kidogo cha makazi au ufungaji mkubwa wa viwanda, tunaleta dhamira ile ile kwa ubora na kuaminika.">
         Our team of certified engineers and technicians brings deep expertise across all major generator brands and power systems. Whether it's a small residential unit or a large industrial installation, we bring the same dedication to quality and reliability.
       </p>
-      
-    </div><!-- end .about-text -->
-
-  </div><!-- end .about-grid -->
+    </div>
+  </div>
 </section>
 
 <!-- SERVICES -->
 <section id="services">
   <div style="text-align:center; max-width:600px; margin: 0 auto 56px;" class="reveal">
-    <div class="section-label">What We Do</div>
-    <h2 class="section-title">Comprehensive <em>Power</em> Services</h2>
+    <div class="section-label" data-en="What We Do" data-sw="Tunachofanya">What We Do</div>
+    <h2 class="section-title"><span data-en="Comprehensive" data-sw="Huduma Kamili za">Comprehensive</span> <em data-en="Power" data-sw="Nishati">Power</em> <span data-en="Services" data-sw="">Services</span></h2>
     <div class="divider" style="margin: 18px auto 0;"></div>
   </div>
   <div class="services-grid">
     <div class="service-card reveal" style="text-align:center; background: rgba(245,184,0,0.08); backdrop-filter: blur(6px); border: 1px solid rgba(245,184,0,0.3);">
       <img src="assets/tools/synchronize.png" alt="Generator Synchronize System" style="width:64px; height:64px; object-fit:contain; margin: 0 auto 16px; display:block;" />
-      <div class="service-title">Generator Synchronize System</div>
-      <p class="service-desc">Advanced paralleling and synchronization of multiple generator sets for seamless load sharing, redundancy, and maximum power reliability. We design, install, and commission synchronization panels for industrial and commercial clients.</p>
+      <div class="service-title" data-en="Generator Synchronize System" data-sw="Mfumo wa Usawazishaji wa Jenereta">Generator Synchronize System</div>
+      <p class="service-desc" data-en="Advanced paralleling and synchronization of multiple generator sets for seamless load sharing, redundancy, and maximum power reliability. We design, install, and commission synchronization panels for industrial and commercial clients."
+         data-sw="Usawazishaji wa hali ya juu wa jenereta nyingi kwa mgawanyo wa mzigo bila usumbufu, uakibishaji, na uaminifu wa juu wa nguvu. Tunabuni, tunafunga, na tunawezesha paneli za usawazishaji kwa wateja wa viwanda na biashara.">
+        Advanced paralleling and synchronization of multiple generator sets for seamless load sharing, redundancy, and maximum power reliability. We design, install, and commission synchronization panels for industrial and commercial clients.
+      </p>
       <div class="service-num">01</div>
     </div>
     <div class="service-card reveal" style="text-align:center; background: rgba(245,184,0,0.08); backdrop-filter: blur(6px); border: 1px solid rgba(245,184,0,0.3);">
       <img src="assets/tools/diagnosis.png" alt="Software Diagnosis" style="width:64px; height:64px; object-fit:contain; margin: 0 auto 16px; display:block;" />
-      <div class="service-title">Software Diagnosis</div>
-      <p class="service-desc">Cutting-edge electronic diagnostics using OEM software for CAT, Perkins, Cummins, John Deere, and more. We read fault codes, calibrate sensors, update firmware, and deliver precise data-driven maintenance insights that prevent costly breakdowns.</p>
+      <div class="service-title" data-en="Software Diagnosis" data-sw="Utambuzi wa Programu">Software Diagnosis</div>
+      <p class="service-desc" data-en="Cutting-edge electronic diagnostics using OEM software for CAT, Perkins, Cummins, John Deere, and more. We read fault codes, calibrate sensors, update firmware, and deliver precise data-driven maintenance insights that prevent costly breakdowns."
+         data-sw="Utambuzi wa kielektroniki wa hali ya juu ukitumia programu za OEM kwa CAT, Perkins, Cummins, John Deere, na zaidi. Tunasoma misimbo ya hitilafu, tunasahihisha vihisi, tunasasisha programu dhibiti, na kutoa maarifa sahihi ya matengenezo yanayozuia hitilafu ghali.">
+        Cutting-edge electronic diagnostics using OEM software for CAT, Perkins, Cummins, John Deere, and more. We read fault codes, calibrate sensors, update firmware, and deliver precise data-driven maintenance insights that prevent costly breakdowns.
+      </p>
       <div class="service-num">02</div>
     </div>
     <div class="service-card reveal" style="text-align:center; background: rgba(245,184,0,0.08); backdrop-filter: blur(6px); border: 1px solid rgba(245,184,0,0.3);">
       <img src="assets/tools/generator.png" alt="Generator Installation" style="width:64px; height:64px; object-fit:contain; margin: 0 auto 16px; display:block;" />
-      <div class="service-title">Generator Installation</div>
-      <p class="service-desc">Professional installation of generator sets of all sizes — from small residential standby units to large industrial power systems. We handle site assessment, civil works coordination, load calculations, and full commissioning.</p>
+      <div class="service-title" data-en="Generator Installation" data-sw="Ufungaji wa Jenereta">Generator Installation</div>
+      <p class="service-desc" data-en="Professional installation of generator sets of all sizes — from small residential standby units to large industrial power systems. We handle site assessment, civil works coordination, load calculations, and full commissioning."
+         data-sw="Ufungaji wa kitaalamu wa jenereta za saizi zote — kutoka vitengo vidogo vya nyumbani hadi mifumo mikubwa ya nguvu ya viwanda. Tunashughulikia tathmini ya eneo, uratibu wa kazi za ujenzi, mahesabu ya mzigo, na uwezeshaji kamili.">
+        Professional installation of generator sets of all sizes — from small residential standby units to large industrial power systems. We handle site assessment, civil works coordination, load calculations, and full commissioning.
+      </p>
       <div class="service-num">03</div>
     </div>
     <div class="service-card reveal" style="text-align:center; background: rgba(245,184,0,0.08); backdrop-filter: blur(6px); border: 1px solid rgba(245,184,0,0.3);">
       <img src="assets/tools/repair.png" alt="Repair & Maintenance" style="width:64px; height:64px; object-fit:contain; margin: 0 auto 16px; display:block;" />
-      <div class="service-title">Repair & Maintenance</div>
-      <p class="service-desc">Scheduled preventive maintenance and emergency repair services for all generator brands and models. Our mobile teams respond rapidly to minimise downtime and restore your power supply with lasting fixes.</p>
+      <div class="service-title" data-en="Repair & Maintenance" data-sw="Ukarabati na Matengenezo">Repair & Maintenance</div>
+      <p class="service-desc" data-en="Scheduled preventive maintenance and emergency repair services for all generator brands and models. Our mobile teams respond rapidly to minimise downtime and restore your power supply with lasting fixes."
+         data-sw="Huduma za matengenezo ya kuzuia zilizopangwa na ukarabati wa dharura kwa aina zote za jenereta. Timu zetu za simu hujibu haraka kupunguza muda wa kupumzika na kurejesha usambazaji wako wa nguvu kwa marekebisho ya kudumu.">
+        Scheduled preventive maintenance and emergency repair services for all generator brands and models. Our mobile teams respond rapidly to minimise downtime and restore your power supply with lasting fixes.
+      </p>
       <div class="service-num">04</div>
     </div>
     <div class="service-card reveal" style="text-align:center; background: rgba(245,184,0,0.08); backdrop-filter: blur(6px); border: 1px solid rgba(245,184,0,0.3);">
       <img src="assets/tools/motor.png" alt="Motor & Generator Rewinding" style="width:64px; height:64px; object-fit:contain; margin: 0 auto 16px; display:block;" />
-      <div class="service-title">Motor & Generator Rewinding</div>
-      <p class="service-desc">Expert rewinding of alternators and electric motors using quality copper wire and precision winding techniques. We restore original performance specifications, extending the service life of your equipment.</p>
+      <div class="service-title" data-en="Motor & Generator Rewinding" data-sw="Uzungushaji wa Motor na Jenereta">Motor & Generator Rewinding</div>
+      <p class="service-desc" data-en="Expert rewinding of alternators and electric motors using quality copper wire and precision winding techniques. We restore original performance specifications, extending the service life of your equipment."
+         data-sw="Uzungushaji wa kitaalamu wa alterneta na motor za umeme kwa kutumia waya wa shaba wa ubora na mbinu sahihi za uzungushaji. Tunarudisha vipimo vya utendaji vya asili, kurefusha maisha ya huduma ya vifaa vyako.">
+        Expert rewinding of alternators and electric motors using quality copper wire and precision winding techniques. We restore original performance specifications, extending the service life of your equipment.
+      </p>
       <div class="service-num">05</div>
     </div>
     <div class="service-card reveal" style="text-align:center; background: rgba(245,184,0,0.08); backdrop-filter: blur(6px); border: 1px solid rgba(245,184,0,0.3);">
       <img src="assets/tools/electricity.png" alt="Electrical Works" style="width:64px; height:64px; object-fit:contain; margin: 0 auto 16px; display:block;" />
-      <div class="service-title">Electrical Works & More</div>
-      <p class="service-desc">Power factor correction, automatic changeover switch supply and installation, control panel design, and general electrical works. More services are continuously being added — contact us to discuss your specific needs.</p>
+      <div class="service-title" data-en="Electrical Works & More" data-sw="Kazi za Umeme na Zaidi">Electrical Works & More</div>
+      <p class="service-desc" data-en="Power factor correction, automatic changeover switch supply and installation, control panel design, and general electrical works. More services are continuously being added — contact us to discuss your specific needs."
+         data-sw="Urekebishaji wa sababu ya nguvu, usambazaji na ufungaji wa swichi ya kubadilisha otomatiki, ubunifu wa paneli ya udhibiti, na kazi za jumla za umeme. Huduma zaidi zinaongezwa kila wakati — wasiliana nasi kujadili mahitaji yako maalum.">
+        Power factor correction, automatic changeover switch supply and installation, control panel design, and general electrical works. More services are continuously being added — contact us to discuss your specific needs.
+      </p>
       <div class="service-num">06</div>
     </div>
   </div>
@@ -826,14 +741,18 @@
 <!-- BRANDS -->
 <section id="brands">
   <div style="text-align:center; max-width:600px; margin: 0 auto 20px;" class="reveal">
-    <div class="section-label">Expertise Across</div>
-    <h2 class="section-title">All Major <em>Brands</em></h2>
+    <div class="section-label" data-en="Expertise Across" data-sw="Utaalamu katika">Expertise Across</div>
+    <h2 class="section-title"><span data-en="All Major" data-sw="Chapa Zote">All Major</span> <em data-en="Brands" data-sw="Kuu">Brands</em></h2>
     <div class="divider" style="margin: 18px auto 0;"></div>
-    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;">Our technicians are trained and certified across the world's leading power generation brands.</p>
+    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;"
+       data-en="Our technicians are trained and certified across the world's leading power generation brands."
+       data-sw="Mafundi wetu wamefunzwa na kupewa vyeti katika chapa zinazoongoza za uzalishaji wa nishati duniani.">
+      Our technicians are trained and certified across the world's leading power generation brands.
+    </p>
   </div>
   <div class="brands-track-wrap reveal">
     <div class="brands-track">
-      <div class="brand-pill"><img src="assets/brands/CAT.png" alt="CAT" style="width:28px; height:20px; object-fit:contain; vertical-align:middle;" />Caterpillar (CAT)</div>
+      <div class="brand-pill"><img src="assets/brands/CAT.png" alt="CAT" style="width:28px; height:20px; object-fit:contain; vertical-align:middle;" /> Caterpillar (CAT)</div>
       <div class="brand-pill"><img src="assets/brands/PERKINS.png" alt="Perkins" style="width:28px; height:20px; object-fit:contain; vertical-align:middle;"/> Perkins</div>
       <div class="brand-pill"><img src="assets/brands/CUMMINS.png" alt="Cummins" style="width:28px; height:20px; object-fit:contain; vertical-align:middle;"/> Cummins</div>
       <div class="brand-pill"><img src="assets/brands/VOLVO.png" alt="Volvo" style="width:28px; height:20px; object-fit:contain; vertical-align:middle;" /> Volvo</div>
@@ -846,10 +765,14 @@
   </div>
   <br><br>
   <div style="text-align:center; max-width:600px; margin: 0 auto 20px;" class="reveal">
-    <div class="section-label">COMPANIES WE'VE WORKED WITH</div>
-    <h2 class="section-title">Trusted by <em>COMPANIES</em></h2>
+    <div class="section-label" data-en="COMPANIES WE'VE WORKED WITH" data-sw="MAKAMPUNI TULIYOFANYA NAZO KAZI">COMPANIES WE'VE WORKED WITH</div>
+    <h2 class="section-title"><span data-en="Trusted by" data-sw="Wanaotuamini">Trusted by</span> <em data-en="COMPANIES" data-sw="MAKAMPUNI">COMPANIES</em></h2>
     <div class="divider" style="margin: 18px auto 0;"></div>
-    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;">Our Company has been trusted across multiple Governmental and Private ones.</p>
+    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;"
+       data-en="Our Company has been trusted across multiple Governmental and Private ones."
+       data-sw="Kampuni yetu imeaminiwa na mashirika mengi ya Serikali na Binafsi.">
+      Our Company has been trusted across multiple Governmental and Private ones.
+    </p>
   </div>
   <div class="brands-track-wrap reveal">
     <div class="brands-track brands-track-reverse">
@@ -865,19 +788,23 @@
   </div>
   <br><br>
   <div style="text-align:center; max-width:600px; margin: 0 auto 20px;" class="reveal">
-    <div class="section-label">CONTROLLERS WE'RE DEALING WITH</div>
+    <div class="section-label" data-en="CONTROLLERS WE'RE DEALING WITH" data-sw="VIDHIBITI TUNAVYOFANYA NAZO KAZI">CONTROLLERS WE'RE DEALING WITH</div>
     <div class="divider" style="margin: 18px auto 0;"></div>
-    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;">Controllers that we are currently working with.</p>
+    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;"
+       data-en="Controllers that we are currently working with."
+       data-sw="Vidhibiti tunavyofanya nazo kazi kwa sasa.">
+      Controllers that we are currently working with.
+    </p>
   </div>
   <div class="brands-track-wrap reveal">
     <div class="brands-track">
       <div class="brand-pill">DSE</div>
-      <div class="brand-pill"> Power Wizard</div>
-      <div class="brand-pill"> Power Command</div>
-      <div class="brand-pill"> InterLight</div>
-      <div class="brand-pill"> CFA7</div>
-      <div class="brand-pill"> VISA</div>
-      <div class="brand-pill"> Comup</div>
+      <div class="brand-pill">Power Wizard</div>
+      <div class="brand-pill">Power Command</div>
+      <div class="brand-pill">InterLight</div>
+      <div class="brand-pill">CFA7</div>
+      <div class="brand-pill">VISA</div>
+      <div class="brand-pill">Comup</div>
     </div>
   </div>
 </section>
@@ -885,10 +812,14 @@
 <!-- LEADERSHIP -->
 <section id="leadership">
   <div style="text-align:center; max-width:600px; margin: 0 auto 56px;" class="reveal">
-    <div class="section-label">Our People</div>
-    <h2 class="section-title">Company <em>Leadership</em></h2>
+    <div class="section-label" data-en="Our People" data-sw="Watu Wetu">Our People</div>
+    <h2 class="section-title"><span data-en="Company" data-sw="Uongozi wa">Company</span> <em data-en="Leadership" data-sw="Kampuni">Leadership</em></h2>
     <div class="divider" style="margin: 18px auto 0;"></div>
-    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;">The experienced team driving Mardos Power Generation's vision and operations.</p>
+    <p style="color:var(--text-mid); font-size:0.9rem; margin-top:8px;"
+       data-en="The experienced team driving Mardos Power Generation's vision and operations."
+       data-sw="Timu yenye uzoefu inayoendesha maono na shughuli za Mardos Power Generation.">
+      The experienced team driving Mardos Power Generation's vision and operations.
+    </p>
   </div>
   <div class="leadership-grid">
     <div class="leader-card reveal">
@@ -897,8 +828,12 @@
       </div>
       <div class="leader-info">
         <div class="leader-name">MARSHED DOSSA</div>
-        <div class="leader-title">Managing Director & Founder</div>
-        <p class="leader-desc">A visionary leader with decades of experience in the power generation industry across East Africa. Drives the company's strategy, partnerships, and commitment to engineering excellence.</p>
+        <div class="leader-title" data-en="Managing Director & Founder" data-sw="Mkurugenzi Mtendaji na Mwanzilishi">Managing Director & Founder</div>
+        <p class="leader-desc"
+           data-en="A visionary leader with decades of experience in the power generation industry across East Africa. Drives the company's strategy, partnerships, and commitment to engineering excellence."
+           data-sw="Kiongozi mwenye maono na miongo ya uzoefu katika tasnia ya uzalishaji wa nishati Afrika Mashariki. Anaendesha mkakati wa kampuni, ushirikiano, na kujitolea kwa ubora wa uhandisi.">
+          A visionary leader with decades of experience in the power generation industry across East Africa. Drives the company's strategy, partnerships, and commitment to engineering excellence.
+        </p>
       </div>
     </div>
     <div class="leader-card reveal">
@@ -907,8 +842,12 @@
       </div>
       <div class="leader-info">
         <div class="leader-name">ABDALLA HASSANI</div>
-        <div class="leader-title">Head of Technical Operations</div>
-        <p class="leader-desc">Certified across CAT, Perkins, and Cummins platforms, leading our team of engineers in delivering precise diagnostics, complex repairs, and synchronization projects to the highest standards.</p>
+        <div class="leader-title" data-en="Head of Technical Operations" data-sw="Mkuu wa Shughuli za Kiufundi">Head of Technical Operations</div>
+        <p class="leader-desc"
+           data-en="Certified across CAT, Perkins, and Cummins platforms, leading our team of engineers in delivering precise diagnostics, complex repairs, and synchronization projects to the highest standards."
+           data-sw="Ana vyeti katika majukwaa ya CAT, Perkins, na Cummins, anaongoza timu yetu ya wahandisi katika kutoa utambuzi sahihi, ukarabati mgumu, na miradi ya usawazishaji kwa viwango vya juu zaidi.">
+          Certified across CAT, Perkins, and Cummins platforms, leading our team of engineers in delivering precise diagnostics, complex repairs, and synchronization projects to the highest standards.
+        </p>
       </div>
     </div>
     <div class="leader-card reveal">
@@ -917,8 +856,12 @@
       </div>
       <div class="leader-info">
         <div class="leader-name">ASIA IDDY</div>
-        <div class="leader-title">Operations Manager</div>
-        <p class="leader-desc">Oversees day-to-day service delivery, field team coordination, and client relationship management — ensuring every project is completed on time, on budget, and beyond expectations.</p>
+        <div class="leader-title" data-en="Operations Manager" data-sw="Meneja wa Shughuli">Operations Manager</div>
+        <p class="leader-desc"
+           data-en="Oversees day-to-day service delivery, field team coordination, and client relationship management — ensuring every project is completed on time, on budget, and beyond expectations."
+           data-sw="Anasimamia utoaji wa huduma za kila siku, uratibu wa timu ya uwanjani, na usimamizi wa mahusiano ya wateja — kuhakikisha kila mradi unakamilika kwa wakati, ndani ya bajeti, na zaidi ya matarajio.">
+          Oversees day-to-day service delivery, field team coordination, and client relationship management — ensuring every project is completed on time, on budget, and beyond expectations.
+        </p>
       </div>
     </div>
   </div>
@@ -927,30 +870,42 @@
 <!-- WHY US -->
 <section id="why">
   <div style="text-align:center; max-width:600px; margin: 0 auto 56px;" class="reveal">
-    <div class="section-label">Why Choose Us</div>
-    <h2 class="section-title">The Mardos <em>Advantage</em></h2>
+    <div class="section-label" data-en="Why Choose Us" data-sw="Kwa Nini Tuchague Sisi">Why Choose Us</div>
+    <h2 class="section-title"><span data-en="The Mardos" data-sw="Faida ya">The Mardos</span> <em data-en="Advantage" data-sw="Mardos">Advantage</em></h2>
     <div class="divider" style="margin: 18px auto 0;"></div>
   </div>
   <div class="why-grid">
     <div class="why-card reveal">
-      <span class="why-icon">🏆</span>
-      <div class="why-title">Certified Expertise</div>
-      <p class="why-text">Our technicians are factory-trained and certified by leading OEMs, guaranteeing work done right — every time.</p>
+      <img src="assets/icons/expertise.png" alt="Icon" class="why-icon">
+      <div class="why-title" data-en="Certified Expertise" data-sw="Utaalamu wenye Vyeti">Certified Expertise</div>
+      <p class="why-text" data-en="Our technicians are factory-trained and certified by leading OEMs, guaranteeing work done right — every time."
+         data-sw="Mafundi wetu wamefunzwa kiwandani na kupewa vyeti na OEM zinazoongoza, kuhakikisha kazi inafanywa vizuri — kila wakati.">
+        Our technicians are factory-trained and certified by leading OEMs, guaranteeing work done right — every time.
+      </p>
     </div>
     <div class="why-card reveal">
-      <span class="why-icon">🚀</span>
-      <div class="why-title">Fast Response</div>
-      <p class="why-text">Emergency breakdowns can't wait. Our rapid deployment teams reach you quickly to restore power with minimal delay.</p>
+      <img src="assets/icons/fast-response.png" alt="Fast Response" class="why-icon">
+      <div class="why-title" data-en="Fast Response" data-sw="Mwitikio wa Haraka">Fast Response</div>
+      <p class="why-text" data-en="Emergency breakdowns can't wait. Our rapid deployment teams reach you quickly to restore power with minimal delay."
+         data-sw="Hitilafu za dharura haziwezi kusubiri. Timu zetu za utekelezaji wa haraka zinakufikia haraka kurejesha nguvu kwa kuchelewa kidogo.">
+        Emergency breakdowns can't wait. Our rapid deployment teams reach you quickly to restore power with minimal delay.
+      </p>
     </div>
     <div class="why-card reveal">
-      <span class="why-icon">🔬</span>
-      <div class="why-title">Technology-Driven</div>
-      <p class="why-text">We invest in the latest OEM diagnostic software and tools so you receive precision analysis, not guesswork.</p>
+      <img src="assets/icons/connection.png" alt="Technology-Driven" class="why-icon">
+      <div class="why-title" data-en="Technology-Driven" data-sw="Inaendeshwa na Teknolojia">Technology-Driven</div>
+      <p class="why-text" data-en="We invest in the latest OEM diagnostic software and tools so you receive precision analysis, not guesswork."
+         data-sw="Tunawekeza katika programu za hivi karibuni za utambuzi za OEM na zana ili upate uchambuzi sahihi, si nadhani.">
+        We invest in the latest OEM diagnostic software and tools so you receive precision analysis, not guesswork.
+      </p>
     </div>
     <div class="why-card reveal">
-      <span class="why-icon">🤝</span>
-      <div class="why-title">Long-Term Partnership</div>
-      <p class="why-text">We build lasting relationships with our clients, offering service contracts and scheduled maintenance programmes.</p>
+      <img src="assets/icons/partnership.png" alt="Long-Term Partnership" class="why-icon">
+      <div class="why-title" data-en="Long-Term Partnership" data-sw="Ushirikiano wa Muda Mrefu">Long-Term Partnership</div>
+      <p class="why-text" data-en="We build lasting relationships with our clients, offering service contracts and scheduled maintenance programmes."
+         data-sw="Tunajenga mahusiano ya kudumu na wateja wetu, kutoa mikataba ya huduma na mipango ya matengenezo iliyopangwa.">
+        We build lasting relationships with our clients, offering service contracts and scheduled maintenance programmes.
+      </p>
     </div>
   </div>
 </section>
@@ -959,55 +914,97 @@
 <section id="contact">
   <div class="contact-grid">
     <div class="reveal">
-      <div class="section-label">Reach Out</div>
-      <h2 class="section-title">Let's <em>Talk Power</em></h2>
+      <div class="section-label" data-en="Reach Out" data-sw="Wasiliana">Reach Out</div>
+      <h2 class="section-title"><span data-en="Let's" data-sw="Tuzungumze">Let's</span> <em data-en="Talk Power" data-sw="Kuhusu Nishati">Talk Power</em></h2>
       <div class="divider"></div>
-      <p style="color:var(--text-mid); font-size:0.9rem; margin-bottom:32px; line-height:1.7;">Whether you need a new installation, urgent repair, or want to learn more about our synchronization systems — our team is ready to help.</p>
+      <p style="color:var(--text-mid); font-size:0.9rem; margin-bottom:32px; line-height:1.7;"
+         data-en="Whether you need a new installation, urgent repair, or want to learn more about our synchronization systems — our team is ready to help."
+         data-sw="Iwe unahitaji ufungaji mpya, ukarabati wa haraka, au unataka kujifunza zaidi kuhusu mifumo yetu ya usawazishaji — timu yetu iko tayari kusaidia.">
+        Whether you need a new installation, urgent repair, or want to learn more about our synchronization systems — our team is ready to help.
+      </p>
       <div class="contact-info">
         <div class="contact-item">
-          <span class="contact-icon">📍</span>
-          <div><div class="contact-label">Office Location</div><div class="contact-val">Magomeni, Dar es Salaam, Tanzania</div></div>
+          <img src="assets/icons/location.png" alt="Location" class="contact-icon">
+          <div>
+            <div class="contact-label" data-en="Office Location" data-sw="Mahali pa Ofisi">Office Location</div>
+            <div class="contact-val">Magomeni, Dar es Salaam, Tanzania</div>
+          </div>
         </div>
         <div class="contact-item">
-          <span class="contact-icon">📞</span>
-          <div><div class="contact-label">Phone / WhatsApp</div><div class="contact-val">+255 715 397 132 / +255 789 132 070</div></div>
+          <img src="assets/icons/call.png" alt="call" class="contact-icon">
+          <div>
+            <div class="contact-label" data-en="Phone / WhatsApp" data-sw="Simu / WhatsApp">Phone / WhatsApp</div>
+            <div class="contact-val">
+              <a href="https://wa.me/255715397132" target="_blank" style="text-decoration:none;color:inherit;">
+              +255 715 397 132
+              </a>
+              <br>
+              <a href="https://wa.me/255789132070" target="_blank" style="text-decoration:none;color:inherit;">
+              +255 789 132 070
+              </a>
+            </div>
+          </div>
         </div>
         <div class="contact-item">
-          <span class="contact-icon">✉️</span>
-          <div><div class="contact-label">Email</div><div class="contact-val">info@mardospower.co.tz</div></div>
+          <img src="assets/icons/mail.png" alt="Email" class="contact-icon">
+          <div>
+            <div class="contact-label" data-en="Email" data-sw="Barua Pepe">Email</div>
+            <div class="contact-val">info@mardospower.co.tz</div>
+          </div>
         </div>
         <div class="contact-item">
-          <span class="contact-icon">🕐</span>
-          <div><div class="contact-label">Working Hours</div><div class="contact-val">Mon – Sat: 8:00 AM – 6:00 PM<br>Emergency: 24 / 7</div></div>
+          <img src="assets/icons/clock.png" alt="Working Hours" class="contact-icon">
+          <div>
+            <div class="contact-label" data-en="Working Hours" data-sw="Masaa ya Kazi">Working Hours</div>
+            <div class="contact-val" data-en="Mon – Sat: 8:00 AM – 6:00 PM | Emergency: 24 / 7"
+                 data-sw="Jumatatu – Jumamosi: 8:00 AM – 6:00 PM | Dharura: 24 / 7">
+              Mon – Sat: 8:00 AM – 6:00 PM<br>Emergency: 24 / 7
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="reveal">
       <div style="background:var(--white); border:1px solid var(--border); border-radius:10px; padding:36px; box-shadow:0 4px 24px rgba(10,26,58,0.08);">
-        <h3 style="font-family:'Oswald',sans-serif; font-size:1.3rem; margin-bottom:24px; color:var(--navy);">Send Us a Message</h3>
-        <div class="contact-form">
+        <h3 style="font-family:'Oswald',sans-serif; font-size:1.3rem; margin-bottom:24px; color:var(--navy);"
+            data-en="Send Us a Message" data-sw="Tutumie Ujumbe">Send Us a Message</h3>
+        <form id="contactForm" class="contact-form">
           <div class="form-row">
-            <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name" /></div>
-            <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+255 ..." /></div>
+            <div class="form-group">
+              <label data-en="Full Name" data-sw="Jina Kamili">Full Name</label>
+              <input type="text" name="full_name" placeholder="Your name" data-en-placeholder="Your name" data-sw-placeholder="Jina lako" required />
+            </div>
+            <div class="form-group">
+              <label data-en="Phone Number" data-sw="Nambari ya Simu">Phone Number</label>
+              <input type="tel" name="phone_number" placeholder="+255 ..." required />
+            </div>
           </div>
-          <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@example.com" /></div>
           <div class="form-group">
-            <label>Service Required</label>
-            <select>
-              <option value="">Select a service...</option>
-              <option>Generator Synchronize System</option>
-              <option>Software Diagnosis (CAT/Perkins/Cummins/JD)</option>
-              <option>Generator Installation</option>
-              <option>Repair & Maintenance</option>
-              <option>Motor / Generator Rewinding</option>
-              <option>Changeover Switch</option>
-              <option>Electrical Works</option>
-              <option>Other / General Enquiry</option>
+            <label data-en="Email Address" data-sw="Anwani ya Barua Pepe">Email Address</label>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label data-en="Service Required" data-sw="Huduma Inayohitajika">Service Required</label>
+            <select name="service_required" required>
+              <option value="" data-en="Select a service..." data-sw="Chagua huduma...">Select a service...</option>
+              <option data-en="Generator Synchronize System" data-sw="Mfumo wa Usawazishaji wa Jenereta">Generator Synchronize System</option>
+              <option data-en="Software Diagnosis (CAT/Perkins/Cummins/JD)" data-sw="Utambuzi wa Programu (CAT/Perkins/Cummins/JD)">Software Diagnosis (CAT/Perkins/Cummins/JD)</option>
+              <option data-en="Generator Installation" data-sw="Ufungaji wa Jenereta">Generator Installation</option>
+              <option data-en="Repair & Maintenance" data-sw="Ukarabati na Matengenezo">Repair & Maintenance</option>
+              <option data-en="Motor / Generator Rewinding" data-sw="Uzungushaji wa Motor / Jenereta">Motor / Generator Rewinding</option>
+              <option data-en="Changeover Switch" data-sw="Swichi ya Kubadilisha">Changeover Switch</option>
+              <option data-en="Electrical Works" data-sw="Kazi za Umeme">Electrical Works</option>
+              <option data-en="Other / General Enquiry" data-sw="Nyingine / Swali la Jumla">Other / General Enquiry</option>
             </select>
           </div>
-          <div class="form-group"><label>Message</label><textarea placeholder="Describe your need or equipment..."></textarea></div>
-          <button class="btn btn-primary" onclick="handleSubmit()" style="width:100%; margin-top:4px;">Send Message ⚡</button>
-        </div>
+          <div class="form-group">
+            <label data-en="Message" data-sw="Ujumbe">Message</label>
+            <textarea name="message" placeholder="Describe your need or equipment..." data-en-placeholder="Describe your need or equipment..." data-sw-placeholder="Elezea haja yako au vifaa vyako..." required></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="handleSubmit()" style="width:100%; margin-top:4px;"
+                  data-en="Send Message ⚡" data-sw="Tuma Ujumbe ⚡">Send Message ⚡</button>
+          <div id="formStatus" style="margin-top:12px;font-weight:600;"></div>
+        </form>
       </div>
     </div>
   </div>
@@ -1017,17 +1014,23 @@
 <footer>
   <div class="footer-top">
     <div>
-      <div class="footer-brand">⚡ MARDOS POWER GENERATION CO. LTD<span>Powering Tanzania's Future</span></div>
+      <div class="footer-brand">
+  <img src="assets/1.jpeg" alt="MARDOS Logo" class="footer-brand-icon">
+  MARDOS POWER GENERATION CO. LTD
+  <span data-en="Powering Tanzania's Future" data-sw="Kuendesha Mustakabali wa Tanzania">
+    Powering Tanzania's Future
+  </span>
+</div>
     </div>
     <div class="footer-links">
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#brands">Brands</a>
-      <a href="#leadership">Leadership</a>
-      <a href="#contact">Contact</a>
+      <a href="#about" data-en="About" data-sw="Kuhusu">About</a>
+      <a href="#services" data-en="Services" data-sw="Huduma">Services</a>
+      <a href="#brands" data-en="Brands" data-sw="Chapa">Brands</a>
+      <a href="#leadership" data-en="Leadership" data-sw="Uongozi">Leadership</a>
+      <a href="#contact" data-en="Contact" data-sw="Wasiliana">Contact</a>
     </div>
   </div>
-  <div class="footer-bottom">© 2026 <em>Mardos Power Generation Co. Ltd</em> · All rights reserved · Dar es Salaam, Tanzania</div>
+  <div class="footer-bottom">© 2026 <em>Mardos Power Generation Co. Ltd</em> · <span data-en="All rights reserved · Dar es Salaam, Tanzania" data-sw="Haki zote zimehifadhiwa · Dar es Salaam, Tanzania">All rights reserved · Dar es Salaam, Tanzania</span></div>
 </footer>
 
 <a href="#contact" class="floating-bolt" title="Contact Us">⚡</a>
@@ -1078,17 +1081,57 @@
   }
 
   window.moveSlide = function(dir) { goTo(current + dir); resetAuto(); };
-
   resetAuto();
 })();
 
-// ── LANGUAGE SWITCHER ──
+// ── LANGUAGE DROPDOWN ──
+function toggleLangDropdown() {
+  document.getElementById('langSwitcher').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  const sw = document.getElementById('langSwitcher');
+  if (!sw.contains(e.target)) sw.classList.remove('open');
+});
+
+let currentLang = 'en';
+
 function setLang(lang) {
-  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-  document.getElementById('btn-sw').classList.toggle('active', lang === 'sw');
+  currentLang = lang;
+  document.getElementById('langSwitcher').classList.remove('open');
+
+  // update selected display
+  if (lang === 'en') {
+    document.getElementById('activeLangFlag').textContent = '🇬🇧';
+    document.getElementById('activeLangLabel').textContent = 'English';
+    document.getElementById('opt-en').classList.add('active');
+    document.getElementById('opt-sw').classList.remove('active');
+  } else {
+    document.getElementById('activeLangFlag').textContent = '🇹🇿';
+    document.getElementById('activeLangLabel').textContent = 'Kiswahili';
+    document.getElementById('opt-sw').classList.add('active');
+    document.getElementById('opt-en').classList.remove('active');
+  }
+
+  // translate all [data-en] elements
   document.querySelectorAll('[data-en]').forEach(function(el) {
+    // skip the dropdown options themselves to avoid conflicts
+    if (el.classList.contains('lang-option')) return;
     el.textContent = lang === 'sw' ? el.dataset.sw : el.dataset.en;
   });
+
+  // handle select options separately (textContent swap)
+  document.querySelectorAll('select option[data-en]').forEach(function(opt) {
+    opt.textContent = lang === 'sw' ? opt.dataset.sw : opt.dataset.en;
+  });
+
+  // handle input/textarea placeholders
+  document.querySelectorAll('[data-en-placeholder]').forEach(function(el) {
+    el.placeholder = lang === 'sw' ? el.dataset.swPlaceholder : el.dataset.enPlaceholder;
+  });
+
+  // handle submit button (it has both data-en and is a button)
+  const submitBtn = document.querySelector('#contactForm button.btn-primary');
+  if (submitBtn) submitBtn.textContent = lang === 'sw' ? 'Tuma Ujumbe ⚡' : 'Send Message ⚡';
 }
 
 // ── EMAILJS CONFIG ──
@@ -1137,26 +1180,30 @@ window.addEventListener('scroll', () => {
 emailjs.init(EMAILJS_CONFIG.publicKey);
 
 function handleSubmit() {
-  const form=document.getElementById('contactForm');
-  const status=document.getElementById('formStatus');
-  const btn=form.querySelector('button');
-  status.style.color='#0A7A2F';
-  status.textContent='Sending message...';
-  btn.disabled=true;
-  btn.textContent='Sending...';
-  emailjs.sendForm(EMAILJS_CONFIG.serviceID,EMAILJS_CONFIG.templateID,form)
-  .then(()=>{
-    status.style.color='green';
-    status.textContent='✓ Message sent successfully. We will contact you shortly.';
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  const btn = form.querySelector('button');
+  status.style.color = '#0A7A2F';
+  status.textContent = currentLang === 'sw' ? 'Inatuma ujumbe...' : 'Sending message...';
+  btn.disabled = true;
+  btn.textContent = currentLang === 'sw' ? 'Inatuma...' : 'Sending...';
+  emailjs.sendForm(EMAILJS_CONFIG.serviceID, EMAILJS_CONFIG.templateID, form)
+  .then(() => {
+    status.style.color = 'green';
+    status.textContent = currentLang === 'sw'
+      ? '✓ Ujumbe umetumwa. Tutawasiliana nawe hivi karibuni.'
+      : '✓ Message sent successfully. We will contact you shortly.';
     form.reset();
   })
-  .catch(()=>{
-    status.style.color='red';
-    status.textContent='✗ Failed to send message. Please try again.';
+  .catch(() => {
+    status.style.color = 'red';
+    status.textContent = currentLang === 'sw'
+      ? '✗ Imeshindwa kutuma. Tafadhali jaribu tena.'
+      : '✗ Failed to send message. Please try again.';
   })
-  .finally(()=>{
-    btn.disabled=false;
-    btn.textContent='Send Message ⚡';
+  .finally(() => {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'sw' ? 'Tuma Ujumbe ⚡' : 'Send Message ⚡';
   });
 }
 
