@@ -171,15 +171,17 @@
 
   .hero-content { position: relative; z-index: 2; text-align: center; max-width: 860px; padding: 0 5%; }
 
-  .hero-badge {
+ .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(245,184,0,0.12); border: 1px solid rgba(245,184,0,0.5);
-  border-radius: 99px; padding: 6px 18px; margin-bottom: 28px;
-  font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dark);
+  border-radius: 99px; padding: 8px 22px; margin-bottom: 28px;
+  font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-dark);
   animation: fade-up 0.8s 0.2s both;
   white-space: nowrap;
-  position: absolute;
-}
+  width: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  }
   .hero-badge span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
   @keyframes pulse-dot { 0%,100% { transform: scale(1); } 50% { transform: scale(1.4); } }
 
@@ -341,10 +343,8 @@
 .gallery-intro-text .section-label { margin-bottom: 10px; }
 .gallery-intro-text p { color: var(--text-mid); line-height: 1.8; font-size: 0.95rem; margin-bottom: 16px; }
 
-/* ── RIGHT PANEL — shared container ── */
 .gallery-right-panel { position: relative; }
 
-/* ── PREVIEW (6 tiles) ── */
 .gallery-preview {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -379,7 +379,6 @@
 .gallery-preview-item:hover .preview-overlay { opacity: 1; }
 .gallery-preview-item .preview-overlay span { color: var(--gold); font-size: 0.7rem; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
 
-/* show all button */
 .gallery-show-btn {
   display: flex; flex-direction: column; align-items: center;
   gap: 6px; margin: 20px auto 0;
@@ -399,19 +398,15 @@
 .gallery-show-btn:hover .arrow-icon { background: var(--blue); }
 @keyframes bounce-down { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
-/* ── FULL VIEWER — overlays the same right panel space ── */
 .gallery-viewer {
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 12px;
   height: 420px;
-
-  /* start hidden, masked behind preview */
   opacity: 0;
   pointer-events: none;
   transform: scale(0.96);
   transition: opacity 0.45s ease, transform 0.45s ease;
-
   position: absolute;
   inset: 0;
 }
@@ -419,11 +414,10 @@
   opacity: 1;
   pointer-events: all;
   transform: scale(1);
-  position: relative; /* take up space */
+  position: relative;
   inset: auto;
 }
 
-/* left: scrollable thumbnail grid */
 .gallery-thumbs {
   overflow-y: auto;
   display: grid;
@@ -451,7 +445,6 @@
 .gallery-thumb.active { border-color: var(--gold); }
 .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* right: large display — CONTAIN so full picture shows */
 .gallery-main {
   position: relative;
   border-radius: 10px;
@@ -463,7 +456,7 @@
 }
 .gallery-main img {
   width: 100%; height: 100%;
-  object-fit: contain;   /* ← shows full image, no cropping */
+  object-fit: contain;
   display: block;
   transition: opacity 0.35s ease;
 }
@@ -494,7 +487,6 @@
 .gallery-main-prev { left: 10px; }
 .gallery-main-next { right: 10px; }
 
-/* collapse button — shown below when viewer is open */
 .gallery-collapse-btn {
   display: none;
   align-items: center; gap: 8px;
@@ -507,13 +499,6 @@
 .gallery-collapse-btn.visible { display: flex; }
 .gallery-collapse-btn:hover { color: var(--gold-dark); }
 
-@media (max-width: 768px) {
-  .gallery-intro { grid-template-columns: 1fr; }
-  .gallery-viewer { grid-template-columns: 1fr; height: auto; position: relative; inset: auto; }
-  .gallery-viewer.open { position: relative; }
-  .gallery-thumbs { grid-template-columns: repeat(4, 1fr); max-height: 130px; }
-  .gallery-main { height: 260px; }
-}
   /* ── BRANDS ── */
   #brands { background: var(--off-white); }
   .brands-track-wrap { overflow: hidden; position: relative; margin-top: 40px; }
@@ -586,12 +571,9 @@
     box-shadow: 0 2px 8px rgba(10,26,58,0.06);
   }
   .contact-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  margin-right: 12px;
-  flex-shrink: 0;
-}
+    width: 24px; height: 24px; object-fit: contain;
+    margin-right: 12px; flex-shrink: 0;
+  }
   .contact-label { font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 4px; }
   .contact-val { font-size: 0.92rem; color: var(--text-dark); }
   .contact-form { display: flex; flex-direction: column; gap: 16px; }
@@ -637,16 +619,130 @@
   .floating-bolt:hover { transform: scale(1.1); }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    .about-grid, .contact-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
-    .hero-stats { gap: 28px; }
-    .form-row { grid-template-columns: 1fr; }
-    .leader-card { flex-direction: column; text-align: center; }
+  .count-up { font-variant-numeric: tabular-nums; }
+
+  /* ════════════════════════════════════════════
+     RESPONSIVE — mobile / tablet
+  ════════════════════════════════════════════ */
+
+  /* ── Tablet (≤ 1024px) ── */
+  @media (max-width: 1024px) {
+    .about-grid { gap: 40px; }
+    .contact-grid { gap: 40px; }
+    .gallery-intro { gap: 40px; }
+    .hero-stats { gap: 32px; }
+    .nav-links { gap: 20px; }
   }
 
-  .count-up { font-variant-numeric: tabular-nums; }
+  /* ── Mobile landscape + small tablet (≤ 768px) ── */
+  @media (max-width: 768px) {
+
+    /* nav */
+    .nav-links { display: none; }
+    nav { padding: 0 4%; }
+    .nav-logo-text { font-size: 0.95rem; }
+    .nav-logo-text span { font-size: 0.58rem; }
+
+    /* lang switcher — smaller on mobile */
+    .lang-switcher { top: 78px; left: 12px; }
+    .lang-selected { min-width: 90px; padding: 5px 10px; font-size: 0.72rem; }
+
+    /* hero */
+    #hero { padding-top: 70px; padding-bottom: 40px; min-height: auto; }
+    .hero-content { padding: 0 4%; }
+    .hero-badge { font-size: 0.62rem; letter-spacing: 1px; padding: 6px 14px; white-space: normal; text-align: center; }
+    .hero-title { font-size: clamp(1.8rem, 8vw, 3rem); }
+    .hero-sub { font-size: 0.95rem; }
+    .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+    .hero-cta .btn { width: 100%; max-width: 280px; text-align: center; }
+    .hero-stats { gap: 20px; margin-top: 40px; }
+    .stat-num { font-size: 1.8rem; }
+    .stat-label { font-size: 0.68rem; }
+
+    /* sections */
+    section { padding: 60px 4%; }
+
+    /* about */
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .about-slider { height: 280px; }
+    .about-pillars { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .about-tag { bottom: -12px; right: -8px; font-size: 0.72rem; padding: 7px 12px; }
+
+    /* services */
+    .services-grid { grid-template-columns: 1fr; }
+
+    /* gallery */
+    .gallery-intro { grid-template-columns: 1fr; gap: 28px; }
+    .gallery-preview { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .gallery-viewer {
+      grid-template-columns: 1fr;
+      height: auto;
+      position: relative;
+      inset: auto;
+    }
+    .gallery-viewer.open { position: relative; }
+    .gallery-thumbs {
+      grid-template-columns: repeat(4, 1fr);
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .gallery-main { height: 240px; }
+
+    /* brands */
+    .brands-track-wrap::before,
+    .brands-track-wrap::after { width: 40px; }
+
+    /* leadership */
+    .leader-card { flex-direction: column; text-align: center; padding: 20px 16px; gap: 16px; }
+    .leader-avatar { width: 80px; height: 80px; }
+
+    /* why */
+    .why-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .why-card { padding: 20px 16px; }
+
+    /* contact */
+    .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .form-row { grid-template-columns: 1fr; }
+
+    /* footer */
+    .footer-top { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .footer-links { gap: 16px; }
+    .footer-brand { font-size: 1rem; }
+
+    /* floating btn */
+    .floating-bolt { width: 44px; height: 44px; bottom: 20px; right: 20px; }
+  }
+
+  /* ── Small mobile (≤ 480px) ── */
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(1.6rem, 9vw, 2.4rem); }
+    .hero-badge { font-size: 0.58rem; padding: 5px 12px; }
+    .about-slider { height: 240px; }
+    .slide-caption h3 { font-size: 1rem; }
+    .slide-caption p { font-size: 0.76rem; }
+    .why-grid { grid-template-columns: 1fr; }
+    .about-pillars { grid-template-columns: 1fr; }
+    .gallery-preview { grid-template-columns: repeat(2, 1fr); }
+    .gallery-thumbs { grid-template-columns: repeat(3, 1fr); }
+    .gallery-main { height: 200px; }
+    .section-title { font-size: clamp(1.5rem, 7vw, 2rem); }
+    .brand-pill { padding: 8px 16px; font-size: 0.88rem; }
+    nav { height: 60px; }
+    .nav-logo-icon { width: 38px; height: 38px; }
+    .ticker-band { padding: 8px 0; }
+    .ticker-inner { font-size: 0.75rem; gap: 40px; }
+    .lang-switcher { top: 68px; }
+    .hero-stats { grid-template-columns: 1fr 1fr; display: grid; gap: 16px; }
+  }
+
+  /* ── Very small (≤ 360px) ── */
+  @media (max-width: 360px) {
+    .hero-title { font-size: 1.5rem; }
+    .hero-cta .btn { padding: 12px 20px; font-size: 0.88rem; }
+    .stat-num { font-size: 1.5rem; }
+    .leader-card { padding: 16px 12px; }
+    section { padding: 48px 3%; }
+  }
 </style>
 </head>
 <body>
@@ -671,7 +767,7 @@
 <!-- NAV -->
 <nav id="mainNav">
   <a href="#hero" class="nav-logo">
-    <div class="nav-logo-icon"><img src="assets/1.jpeg" alt="Mardos Logo" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" /></div>
+    <div class="nav-logo-icon"><img src="assets/1.png" alt="Mardos Logo" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" /></div>
     <div class="nav-logo-text">
       MARDOS
       <span>Power Generation Co. Ltd</span>
@@ -707,9 +803,11 @@
   <div class="hero-bg-grid"></div>
   <div class="hero-bolts" id="boltsContainer"></div>
   <div class="hero-content">
-    <div class="hero-badge">
-      <span></span>
-      <span data-en="Tanzania's Power Generation Specialists" data-sw="Wataalamu wa Uzalishaji Nishati Tanzania">Tanzania's Power Generation Specialists</span>
+    <div style="display:flex; justify-content:center; width:100%; margin-bottom:28px;">
+      <div class="hero-badge" style="margin-bottom:0;">
+        <span></span>
+        <span data-en="Tanzania's Power Generation Specialists" data-sw="Wataalamu wa Uzalishaji Nishati Tanzania">Tanzania's Power Generation Specialists</span>
+      </div>
     </div>
     <h1 class="hero-title">
       <span data-en="Powering" data-sw="Kuwezesha">Powering</span> <em data-en="Industry" data-sw="Viwanda">Industry</em>,<br>
@@ -805,7 +903,7 @@
         </div>
 
         <div class="slide">
-          <div class="slide-bg" style="background-image:url('assets/selected sites/6.png'); background-color:#0d2a50; background-size:contain; background-repeat:no-repeat; background-position:center;"></div>
+          <div class="slide-bg" style="background-image:url('assets/selected sites/6.png'); background-size:cover; background-position:center;"></div>
           <div class="slide-overlay"></div>
           <div class="slide-badge">05 / 06</div>
           <div class="slide-caption">
@@ -824,7 +922,7 @@
           <div class="slide-caption">
             <h3 data-en="Electrical Works" data-sw="Kazi za Umeme">Electrical Works</h3>
             <p data-en="Power factor correction, changeover switch installation, control panel design and all general electrical works across Tanzania."
-               data-sw="Marekebisho ya ‘power factor’, ufungaji wa mifumo ya ‘changeover switch’, usanifu wa paneli za udhibiti, na kazi zote za jumla za umeme kote nchini Tanzania.">
+               data-sw="Marekebisho ya 'power factor', ufungaji wa mifumo ya 'changeover switch', usanifu wa paneli za udhibiti, na kazi zote za jumla za umeme kote nchini Tanzania.">
               Power factor correction, changeover switch installation, control panel design and all general electrical works across Tanzania.
             </p>
           </div>
@@ -917,7 +1015,7 @@
       <img src="assets/tools/electricity.png" alt="Electrical Works" style="width:64px; height:64px; object-fit:contain; margin: 0 auto 16px; display:block;" />
       <div class="service-title" data-en="Electrical Works & More" data-sw="Kazi za Umeme na Zaidi">Electrical Works & More</div>
       <p class="service-desc" data-en="Power factor correction, automatic changeover switch supply and installation, control panel design, and general electrical works. More services are continuously being added — contact us to discuss your specific needs."
-         data-sw="Marekebisho ya ‘power factor’, usambazaji na ufungaji wa mifumo ya ‘automatic changeover switch’, usanifu wa paneli za udhibiti, na kazi zote za jumla za umeme. Huduma zaidi zinaendelea kuongezwa kila siku — wasiliana nasi leo ili tujadili mahitaji yako maalum.">
+         data-sw="Marekebisho ya 'power factor', usambazaji na ufungaji wa mifumo ya 'automatic changeover switch', usanifu wa paneli za udhibiti, na kazi zote za jumla za umeme. Huduma zaidi zinaendelea kuongezwa kila siku — wasiliana nasi leo ili tujadili mahitaji yako maalum.">
         Power factor correction, automatic changeover switch supply and installation, control panel design, and general electrical works. More services are continuously being added — contact us to discuss your specific needs.
       </p>
       <div class="service-num">06</div>
@@ -925,12 +1023,9 @@
   </div>
 </section>
 
-
 <!-- GALLERY -->
 <section id="gallery">
   <div class="gallery-intro reveal">
-
-    <!-- LEFT: text -->
     <div class="gallery-intro-text">
       <div class="section-label" data-en="Our Work in Action" data-sw="Kazi Zetu Kwa Vitendo">Our Work in Action</div>
       <h2 class="section-title">
@@ -948,10 +1043,7 @@
       </p>
     </div>
 
-    <!-- RIGHT: shared panel — preview AND viewer occupy same space -->
     <div class="gallery-right-panel">
-
-      <!-- 6-tile preview -->
       <div class="gallery-preview" id="galleryPreview">
         <div class="gallery-preview-item" onclick="openGallery(0)">
           <img src="assets/gallery/1.jpeg" alt="Work 1" loading="lazy"/>
@@ -977,16 +1069,13 @@
           <img src="assets/gallery/6.jpeg" alt="Work 6" loading="lazy"/>
           <div class="preview-overlay"><span>VIEW</span></div>
         </div>
-
       </div>
 
-      <!-- show all button — sits below the 6 tiles -->
       <button class="gallery-show-btn" onclick="openGallery(0)" id="galleryShowBtn">
         <span data-en="VIEW FULL GALLERY" data-sw="TAZAMA PICHA ZOTE">VIEW FULL GALLERY</span>
         <div class="arrow-icon">▼</div>
       </button>
 
-      <!-- full viewer — hidden, fades in over preview -->
       <div class="gallery-viewer" id="galleryViewer">
         <div class="gallery-thumbs" id="galleryThumbs"></div>
         <div class="gallery-main">
@@ -997,15 +1086,12 @@
         </div>
       </div>
 
-      <!-- collapse — only visible when viewer is open -->
       <button class="gallery-collapse-btn" id="galleryCollapseBtn" onclick="closeGallery()">
         ▲ <span data-en="COLLAPSE GALLERY" data-sw="FUNGA MATUNZIO">COLLAPSE GALLERY</span>
       </button>
-
-    </div><!-- end .gallery-right-panel -->
+    </div>
   </div>
 </section>
-
 
 <!-- BRANDS -->
 <section id="brands">
@@ -1208,13 +1294,8 @@
           <div>
             <div class="contact-label" data-en="Phone / WhatsApp" data-sw="Simu / WhatsApp">Phone / WhatsApp</div>
             <div class="contact-val">
-              <a href="https://wa.me/255715397132" target="_blank" style="text-decoration:none;color:inherit;">
-              +255 715 397 132
-              </a>
-              <br>
-              <a href="https://wa.me/255693808829" target="_blank" style="text-decoration:none;color:inherit;">
-              +255 693 808 829
-              </a>
+              <a href="https://wa.me/255715397132" target="_blank" style="text-decoration:none;color:inherit;">+255 715 397 132</a><br>
+              <a href="https://wa.me/255693808829" target="_blank" style="text-decoration:none;color:inherit;">+255 693 808 829</a>
             </div>
           </div>
         </div>
@@ -1288,12 +1369,10 @@
   <div class="footer-top">
     <div>
       <div class="footer-brand">
-  <img src="assets/1.jpeg" alt="MARDOS Logo" class="footer-brand-icon">
-  MARDOS POWER GENERATION CO. LTD
-  <span data-en="Powering Tanzania's Future" data-sw="Tukisambaza Nishati kwa Mustakabali wa Tanzania">
-    Powering Tanzania's Future
-  </span>
-</div>
+        <img src="assets/1.jpeg" alt="MARDOS Logo" class="footer-brand-icon">
+        MARDOS POWER GENERATION CO. LTD
+        <span data-en="Powering Tanzania's Future" data-sw="Tukisambaza Nishati kwa Mustakabali wa Tanzania">Powering Tanzania's Future</span>
+      </div>
     </div>
     <div class="footer-links">
       <a href="#about" data-en="About" data-sw="Kuhusu">About</a>
@@ -1374,7 +1453,6 @@ function setLang(lang) {
   currentLang = lang;
   document.getElementById('langSwitcher').classList.remove('open');
 
-  // update selected display
   if (lang === 'en') {
     document.getElementById('activeLangFlag').textContent = '🇬🇧';
     document.getElementById('activeLangLabel').textContent = 'English';
@@ -1387,28 +1465,22 @@ function setLang(lang) {
     document.getElementById('opt-en').classList.remove('active');
   }
 
-  // translate all [data-en] elements
   document.querySelectorAll('[data-en]').forEach(function(el) {
-    // skip the dropdown options themselves to avoid conflicts
     if (el.classList.contains('lang-option')) return;
     el.textContent = lang === 'sw' ? el.dataset.sw : el.dataset.en;
   });
 
-  // handle select options separately (textContent swap)
   document.querySelectorAll('select option[data-en]').forEach(function(opt) {
     opt.textContent = lang === 'sw' ? opt.dataset.sw : opt.dataset.en;
   });
 
-  // handle input/textarea placeholders
   document.querySelectorAll('[data-en-placeholder]').forEach(function(el) {
     el.placeholder = lang === 'sw' ? el.dataset.swPlaceholder : el.dataset.enPlaceholder;
   });
 
-  // handle submit button (it has both data-en and is a button)
   const submitBtn = document.querySelector('#contactForm button.btn-primary');
   if (submitBtn) submitBtn.textContent = lang === 'sw' ? 'Tuma Ujumbe ⚡' : 'Send Message ⚡';
 }
-
 
 // ── GALLERY ──
 const GALLERY_IMAGES = [
@@ -1469,17 +1541,12 @@ function updateCounter() {
 
 function openGallery(startIndex) {
   galleryGoTo(startIndex || 0);
-
-  // hide preview, show viewer — same space
   const preview = document.getElementById('galleryPreview');
   const showBtn = document.getElementById('galleryShowBtn');
   const viewer  = document.getElementById('galleryViewer');
   const collapse = document.getElementById('galleryCollapseBtn');
-
   preview.classList.add('hidden');
   showBtn.style.display = 'none';
-
-  // small delay lets hidden class apply before viewer animates in
   setTimeout(function() {
     viewer.classList.add('open');
     collapse.classList.add('visible');
@@ -1491,10 +1558,8 @@ function closeGallery() {
   const showBtn = document.getElementById('galleryShowBtn');
   const viewer  = document.getElementById('galleryViewer');
   const collapse = document.getElementById('galleryCollapseBtn');
-
   viewer.classList.remove('open');
   collapse.classList.remove('visible');
-
   setTimeout(function() {
     preview.classList.remove('hidden');
     showBtn.style.display = 'flex';
