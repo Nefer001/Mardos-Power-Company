@@ -26,23 +26,55 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     font-family: 'Inter', sans-serif;
     background: var(--white);
     color: var(--text-dark);
-    overflow-x: hidden;
+    min-width: 320px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  img, video, iframe {
+    display: block;
+    max-width: 100%;
   }
 
   /* ── NAV ── */
   nav {
-    position: fixed; top: 0; width: 100%; z-index: 1000;
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
     background: var(--navy);
     border-bottom: 3px solid var(--gold);
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 5%; height: 70px;
     transition: box-shadow 0.3s;
+    overflow: visible;
   }
   nav.scrolled { box-shadow: 0 4px 24px rgba(10,26,58,0.25); }
+
+  .nav-menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(245,184,0,0.45);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    padding: 0;
+    margin-left: 12px;
+  }
+  .nav-menu-toggle img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
 
   .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
   .nav-logo-icon {
@@ -58,7 +90,7 @@
   .nav-logo-text { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: var(--gold); line-height: 1.2; }
   .nav-logo-text span { display: block; font-size: 0.65rem; color: #90b8d8; letter-spacing: 1px; font-weight: 400; }
 
-  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
   .nav-links a {
     color: #cdd8e8; text-decoration: none; font-size: 0.85rem;
     letter-spacing: 1px; font-weight: 500; text-transform: uppercase;
@@ -72,7 +104,7 @@
   .nav-links a:hover::after { width: 100%; }
 
   /* ── TICKER ── */
-  .ticker-band { background: var(--gold); overflow: hidden; padding: 10px 0; }
+  .ticker-band { background: var(--gold); overflow: hidden; padding: 10px 0; margin-top: 70px; }
   .ticker-inner {
     display: flex; gap: 60px; width: max-content;
     animation: ticker-scroll 22s linear infinite;
@@ -229,6 +261,7 @@
 
   /* ── SECTION COMMON ── */
   section { padding: 100px 5%; }
+  section[id] { scroll-margin-top: 90px; }
   .section-label { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 10px; font-weight: 600; }
   .section-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; color: var(--navy); }
   .section-title em { font-style: normal; color: var(--gold-dark); }
@@ -642,7 +675,29 @@
     
 
     /* nav */
-    .nav-links { display: none; }
+    .nav-menu-toggle { display: inline-flex; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      background: rgba(10,26,58,0.98);
+      padding: 16px 4% 20px;
+      border-top: 1px solid rgba(245,184,0,0.2);
+      box-shadow: 0 12px 24px rgba(10,26,58,0.2);
+    }
+    nav.nav-open .nav-links { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block;
+      width: 100%;
+      padding: 12px 0;
+      font-size: 0.78rem;
+    }
     nav { padding: 0 4%; }
     .nav-logo-text { font-size: 0.95rem; }
     .nav-logo-text span { font-size: 0.58rem; }
@@ -733,7 +788,7 @@
     .brand-pill { padding: 8px 16px; font-size: 0.88rem; }
     nav { height: 60px; }
     .nav-logo-icon { width: 38px; height: 38px; }
-    .ticker-band { padding: 8px 0; }
+    .ticker-band { padding: 8px 0; margin-top: 60px; }
     .ticker-inner { font-size: 0.75rem; gap: 40px; }
     .lang-switcher { top: 68px; }
     .hero-stats { grid-template-columns: 1fr 1fr; display: grid; gap: 16px; }
@@ -777,6 +832,9 @@
       <span>Power Generation Co. Ltd</span>
     </div>
   </a>
+  <button class="nav-menu-toggle" id="menuToggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+    <img src="assets/icons/navigation menu.png" alt="" />
+  </button>
   <ul class="nav-links">
     <li><a href="#about" data-en="About" data-sw="Kuhusu">About</a></li>
     <li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li>
@@ -787,7 +845,7 @@
 </nav>
 
 <!-- TICKER -->
-<div class="ticker-band" style="margin-top:70px;">
+<div class="ticker-band">
   <div class="ticker-inner">
     <span data-en="Power You Can Trust" data-sw="Nishati Unayoweza Kuiamini">Power You Can Trust</span><span class="ticker-sep"> | </span>
     <span data-en="Expert Generator Services" data-sw="Huduma Bora za Kitaalamu za Jenereta">Expert Generator Services</span><span class="ticker-sep"> | </span>
@@ -1395,6 +1453,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
+
+// ── MOBILE NAV ──
+const mainNav = document.getElementById('mainNav');
+const menuToggle = document.getElementById('menuToggle');
+
+if (menuToggle) {
+  menuToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isOpen = mainNav.classList.toggle('nav-open');
+    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+}
+
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    mainNav.classList.remove('nav-open');
+    if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+  });
+});
+
+document.addEventListener('click', function(e) {
+  if (mainNav && !mainNav.contains(e.target)) {
+    mainNav.classList.remove('nav-open');
+    if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 768) {
+    mainNav.classList.remove('nav-open');
+    if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+  }
+});
 
 // ── SLIDER ──
 (function() {
