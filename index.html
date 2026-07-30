@@ -116,59 +116,52 @@
 
   /* ── LANGUAGE SWITCHER ── */
   .lang-switcher {
-    position: fixed;
-    top: 80px;
-    left: 20px;
+    position: absolute;
+    top: 50%;
+    right: 110px;
+    transform: translateY(-50%);
     z-index: 2000;
   }
   .lang-selected {
-    display: flex; align-items: center; gap: 8px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     background: var(--navy);
-    border: 1px solid rgba(245,184,0,0.5);
+    border: 1px solid rgba(245,184,0,0.45);
     border-radius: 6px;
-    padding: 7px 14px;
+    padding: 6px 10px;
     cursor: pointer;
     font-family: 'Oswald', sans-serif;
     font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;
     color: var(--gold);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 16px rgba(10,26,58,0.3);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(10,26,58,0.25);
     user-select: none;
     transition: border-color 0.2s;
-    min-width: 110px;
+    min-width: 54px;
   }
   .lang-selected:hover { border-color: var(--gold); }
-  .lang-selected .lang-flag { font-size: 1rem; }
-  .lang-selected .lang-label { flex: 1; }
-  .lang-selected .lang-arrow {
-    font-size: 0.6rem; color: rgba(245,184,0,0.6);
-    transition: transform 0.25s;
-  }
+  .lang-selected .lang-label { display: inline-block; }
+  .lang-selected .lang-arrow { font-size: 0.6rem; color: rgba(245,184,0,0.6); transition: transform 0.25s; margin-left: 6px; }
   .lang-switcher.open .lang-arrow { transform: rotate(180deg); }
 
   .lang-dropdown {
     display: none;
-    position: absolute; top: calc(100% + 6px); left: 0;
+    position: absolute; top: calc(100% + 6px); right: 0;
     background: var(--navy);
-    border: 1px solid rgba(245,184,0,0.4);
+    border: 1px solid rgba(245,184,0,0.35);
     border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(10,26,58,0.4);
-    min-width: 110px;
+    box-shadow: 0 8px 24px rgba(10,26,58,0.35);
+    min-width: 56px;
+    text-align: center;
   }
   .lang-switcher.open .lang-dropdown { display: block; }
 
   .lang-option {
-    display: flex; align-items: center; gap: 8px;
-    padding: 9px 14px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;
-    color: #90aac8; cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    padding: 8px 12px; font-family: 'Oswald', sans-serif; font-size: 0.82rem;
+    letter-spacing: 1px; text-transform: uppercase; color: #90aac8; cursor: pointer;
   }
-  .lang-option:hover { background: rgba(245,184,0,0.12); color: var(--gold); }
-  .lang-option.active { color: var(--gold); background: rgba(245,184,0,0.08); }
-  .lang-option .lang-flag { font-size: 1rem; }
+  .lang-option:hover { background: rgba(245,184,0,0.08); color: var(--gold); }
+  .lang-option.active { color: var(--gold); background: rgba(245,184,0,0.06); }
 
   /* ── HERO ── */
   #hero {
@@ -206,7 +199,7 @@
 
  .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(245,184,0,0.12); border: 1px solid rgba(245,184,0,0.5);
+  background: rgba(245,184,0,0.08); border: none;
   border-radius: 99px; padding: 8px 22px; margin-bottom: 28px;
   font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-dark);
   animation: fade-up 0.8s 0.2s both;
@@ -215,7 +208,7 @@
   max-width: 100%;
   box-sizing: border-box;
   }
-  .hero-badge span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
+  /* removed decorative dot to improve readability */
   @keyframes pulse-dot { 0%,100% { transform: scale(1); } 50% { transform: scale(1.4); } }
 
   .hero-title {
@@ -702,14 +695,14 @@
     .nav-logo-text { font-size: 0.95rem; }
     .nav-logo-text span { font-size: 0.58rem; }
 
-    /* lang switcher — smaller on mobile */
-    .lang-switcher { top: 78px; left: 12px; }
-    .lang-selected { min-width: 90px; padding: 5px 10px; font-size: 0.72rem; }
+    /* lang switcher — positioned inside nav on mobile */
+    .lang-switcher { right: 64px; top: 50%; transform: translateY(-50%); }
+    .lang-selected { min-width: 48px; padding: 5px 8px; font-size: 0.72rem; }
 
     /* hero */
     #hero { padding-top: 70px; padding-bottom: 40px; min-height: auto; }
     .hero-content { padding: 0 4%; }
-    .hero-badge { font-size: 0.62rem; letter-spacing: 1px; padding: 6px 14px; white-space: normal; text-align: center; }
+    .hero-badge { font-size: 0.58rem; letter-spacing: 1px; padding: 6px 10px; white-space: nowrap !important; text-align: left; display: inline-block; max-width: calc(100% - 60px); overflow: hidden; text-overflow: ellipsis; }
     .hero-title { font-size: clamp(1.8rem, 8vw, 3rem); }
     .hero-sub { font-size: 0.95rem; }
     .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
@@ -794,7 +787,7 @@
   /* ── Small mobile (≤ 480px) ── */
   @media (max-width: 480px) {
     .hero-title { font-size: clamp(1.6rem, 9vw, 2.4rem); }
-    .hero-badge { font-size: 0.58rem; padding: 5px 12px; }
+    .hero-badge { font-size: 0.5rem; padding: 4px 8px; white-space: nowrap !important; max-width: calc(100% - 56px); overflow: hidden; text-overflow: ellipsis; }
     .about-slider { height: 240px; }
     .slide-caption h3 { font-size: 1rem; }
     .slide-caption p { font-size: 0.76rem; }
@@ -809,7 +802,7 @@
     .nav-logo-icon { width: 38px; height: 38px; }
     .ticker-band { padding: 8px 0; margin-top: 60px; }
     .ticker-inner { font-size: 0.75rem; gap: 40px; }
-    .lang-switcher { top: 68px; }
+    .lang-switcher { right: 64px; top: 50%; transform: translateY(-50%); }
     .hero-stats { grid-template-columns: 1fr 1fr; display: grid; gap: 16px; }
     /* Ensure contact cards and form fully fit the viewport on very small screens */
     #contact { padding-left: 4%; padding-right: 4%; }
@@ -839,22 +832,8 @@
 </head>
 <body>
 
-<!-- LANGUAGE SWITCHER -->
-<div class="lang-switcher" id="langSwitcher">
-  <div class="lang-selected" onclick="toggleLangDropdown()">
-    <span class="lang-flag" id="activeLangFlag">🇬🇧</span>
-    <span class="lang-label" id="activeLangLabel">English</span>
-    <span class="lang-arrow">▼</span>
-  </div>
-  <div class="lang-dropdown">
-    <div class="lang-option active" onclick="setLang('en')" id="opt-en">
-      <span class="lang-flag">🇬🇧</span> English
-    </div>
-    <div class="lang-option" onclick="setLang('sw')" id="opt-sw">
-      <span class="lang-flag">🇹🇿</span> Swahili
-    </div>
-  </div>
-</div>
+<!-- LANGUAGE SWITCHER (moved into nav) -->
+<!-- placeholder removed; rendered inside the nav for visual alignment -->
 
 <!-- NAV -->
 <nav id="mainNav">
@@ -865,6 +844,17 @@
       <span>Power Generation Co. Ltd</span>
     </div>
   </a>
+  <!-- compact language switcher placed inside nav for alignment -->
+  <div class="lang-switcher" id="langSwitcher" aria-label="Language switcher">
+    <div class="lang-selected" onclick="toggleLangDropdown()" role="button" tabindex="0">
+      <span class="lang-label" id="activeLangLabel">EN</span>
+      <span class="lang-arrow">▼</span>
+    </div>
+    <div class="lang-dropdown">
+      <div class="lang-option active" onclick="setLang('en')" id="opt-en">EN</div>
+      <div class="lang-option" onclick="setLang('sw')" id="opt-sw">SW</div>
+    </div>
+  </div>
   <button class="nav-menu-toggle" id="menuToggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
     <img src="assets/icons/navigation menu.png" alt="" />
   </button>
@@ -900,7 +890,6 @@
   <div class="hero-content">
     <div style="display:flex; justify-content:center; width:100%; margin-bottom:28px;">
       <div class="hero-badge" style="margin-bottom:0;">
-        <span></span>
         <span data-en="Tanzania's Power Generation Specialists" data-sw="Wataalamu wa Uzalishaji Nishati Tanzania">Tanzania's Power Generation Specialists</span>
       </div>
     </div>
@@ -1582,13 +1571,11 @@ function setLang(lang) {
   document.getElementById('langSwitcher').classList.remove('open');
 
   if (lang === 'en') {
-    document.getElementById('activeLangFlag').textContent = '🇬🇧';
-    document.getElementById('activeLangLabel').textContent = 'English';
+    document.getElementById('activeLangLabel').textContent = 'EN';
     document.getElementById('opt-en').classList.add('active');
     document.getElementById('opt-sw').classList.remove('active');
   } else {
-    document.getElementById('activeLangFlag').textContent = '🇹🇿';
-    document.getElementById('activeLangLabel').textContent = 'Kiswahili';
+    document.getElementById('activeLangLabel').textContent = 'SW';
     document.getElementById('opt-sw').classList.add('active');
     document.getElementById('opt-en').classList.remove('active');
   }
