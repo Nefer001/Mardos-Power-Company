@@ -760,8 +760,27 @@
     .why-card { padding: 20px 16px; }
 
     /* contact */
-    .contact-grid { grid-template-columns: 1fr; gap: 32px; }
-    .form-row { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 28px; }
+    .contact-info { gap: 14px; }
+    .contact-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 16px 14px;
+    }
+    .contact-icon {
+      width: 22px;
+      height: 22px;
+      margin-right: 0;
+      margin-bottom: 2px;
+    }
+    .contact-val { font-size: 0.9rem; line-height: 1.6; }
+    .contact-form { gap: 12px; }
+    .form-row { grid-template-columns: 1fr; gap: 12px; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select { padding: 11px 12px; font-size: 0.88rem; }
+    .form-group label { font-size: 0.74rem; }
 
     /* footer */
     .footer-top { flex-direction: column; align-items: flex-start; gap: 16px; }
@@ -792,6 +811,20 @@
     .ticker-inner { font-size: 0.75rem; gap: 40px; }
     .lang-switcher { top: 68px; }
     .hero-stats { grid-template-columns: 1fr 1fr; display: grid; gap: 16px; }
+    /* Ensure contact cards and form fully fit the viewport on very small screens */
+    #contact { padding-left: 4%; padding-right: 4%; }
+    #contact .contact-grid { grid-template-columns: 1fr; gap: 18px; max-width: 100%; box-sizing: border-box; }
+    #contact .contact-info { width: 100%; max-width: 100%; box-sizing: border-box; }
+    #contact .contact-item { width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden; padding: 12px; }
+    #contact .contact-item > * { max-width: 100%; box-sizing: border-box; }
+    #contact .contact-form { width: 100%; max-width: 100%; box-sizing: border-box; }
+    #contact .form-row { grid-template-columns: 1fr; gap: 10px; }
+    #contact .form-group input,
+    #contact .form-group textarea,
+    #contact .form-group select { width: 100%; max-width: 100%; box-sizing: border-box; }
+    .contact-val { word-break: break-word; }
+    /* Reduce floating button size slightly to avoid overlap */
+    .floating-bolt { width: 48px; height: 48px; right: 16px; bottom: 20px; }
   }
 
   /* ── Very small (≤ 360px) ── */
